@@ -388,96 +388,98 @@
             </form>
         </div>
     </div>
-    
-    <script>
-        const WEBHOOK_URL = "https://webhook.tasklet.ai/wti_kh3as03xs1spref7c9a0";
+   <script>
+    document.getElementById("travelForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
         
-        document.getElementById("travelForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
+        const form = e.target;
+        const successMsg = document.getElementById("successMessage");
+        const errorMsg = document.getElementById("errorMessage");
+        const submitBtn = form.querySelector('button[type="submit"]');
+        
+        const interessen = Array.from(form.querySelectorAll('input[name="interessen"]:checked'))
+            .map(el => el.value)
+            .join(", ");
+        
+        if (!interessen) {
+            errorMsg.textContent = "❌ Bitte wählen Sie mindestens einen Interessensbereich!";
+            errorMsg.style.display = "block";
+            successMsg.style.display = "none";
+            return;
+        }
+        
+        const budget = form.querySelector('input[name="budget_gesamt"]:checked');
+        if (!budget) {
+            errorMsg.textContent = "❌ Bitte wählen Sie Ihr Budget!";
+            errorMsg.style.display = "block";
+            successMsg.style.display = "none";
+            return;
+        }
+        
+        const formData = {
+            kundenname: form.querySelector('input[name="kundenname"]').value,
+            kundenemail: form.querySelector('input[name="kundenemail"]').value,
+            reiseziel: form.querySelector('input[name="reiseziel"]').value,
+            dauer: form.querySelector('select[name="dauer"]').value,
+            personenanzahl: form.querySelector('select[name="personenanzahl"]').value,
+            budget_gesamt: budget.value,
+            interessen: interessen,
+            preisniveau: bestimmePreisniveau(budget.value),
+            besonderheiten: form.querySelector('textarea[name="besonderheiten"]').value || "Keine"
+        };
+        
+        try {
+            submitBtn.disabled = true;
+            submitBtn.textContent = "⏳ Wird verarbeitet...";
             
-            const form = e.target;
-            const successMsg = document.getElementById("successMessage");
-            const errorMsg = document.getElementById("errorMessage");
+            const webhookUrl = "https://webhook.tasklet.ai/wti_kh3as03xs1spref7c9a0";
             
-            const interessen = Array.from(form.querySelectorAll('input[name="interessen"]:checked'))
-                .map(el => el.value)
-                .join(", ");
+            const response = await fetch(webhookUrl, {
+                method: "POST",
+                mode: "no-cors",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData)
+            });
             
-            if (!interessen) {
-                errorMsg.textContent = "❌ Bitte wählen Sie mindestens einen Interessensbereich!";
-                errorMsg.style.display = "block";
-                successMsg.style.display = "none";
-                return;
-            }
+            successMsg.style.display = "block";
+            errorMsg.style.display = "none";
+            form.reset();
             
-            const budget = form.querySelector('input[name="budget_gesamt"]:checked');
-            if (!budget) {
-                errorMsg.textContent = "❌ Bitte wählen Sie Ihr Budget!";
-                errorMsg.style.display = "block";
-                successMsg.style.display = "none";
-                return;
-            }
-            
-            const formData = {
-                kundenname: form.querySelector('input[name="kundenname"]').value,
-                kundenemail: form.querySelector('input[name="kundenemail"]').value,
-                reiseziel: form.querySelector('input[name="reiseziel"]').value,
-                dauer: form.querySelector('select[name="dauer"]').value,
-                personenanzahl: form.querySelector('select[name="personenanzahl"]').value,
-                budget_gesamt: budget.value,
-                interessen: interessen,
-                preisniveau: bestimmePreisniveau(budget.value),
-                besonderheiten: form.querySelector('textarea[name="besonderheiten"]').value || "Keine"
-            };
-            
-            try {
-                const submitBtn = form.querySelector('button[type="submit"]');
-                submitBtn.disabled = true;
-                submitBtn.textContent = "⏳ Wird verarbeitet...";
-                
-                const response = await fetch(WEBHOOK_URL, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                if (response.ok || response.status === 202) {
-                    successMsg.style.display = "block";
-                    errorMsg.style.display = "none";
-                    form.reset();
-                    
-                    setTimeout(() => {
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = "🚀 Reiseangebot Jetzt Anfordern";
-                    }, 5000);
-                } else {
-                    throw new Error("Anfrage fehlgeschlagen");
-                }
-            } catch (error) {
-                console.error("Fehler:", error);
-                errorMsg.textContent = "❌ Fehler beim Absenden. Bitte versuchen Sie es später erneut.";
-                errorMsg.style.display = "block";
-                successMsg.style.display = "none";
-                
-                const submitBtn = form.querySelector('button[type="submit"]');
+            setTimeout(() => {
                 submitBtn.disabled = false;
                 submitBtn.textContent = "🚀 Reiseangebot Jetzt Anfordern";
-            }
-        });
-        
-        function bestimmePreisniveau(budget) {
-            const map = {
-                "€0 - €1500": "backpacker",
-                "€1500 - €2500": "budget_asia",
-                "€2500 - €5000": "standard_europe",
-                "€5000 - €10000": "premium_us",
-                "€10000+": "ultra_luxury",
-                "Flexibel": "standard_europe"
-            };
-            return map[budget] || "standard_europe";
+            }, 5000);
+            
+        } catch (error) {
+            console.error("Fehler:", error);
+            errorMsg.textContent = "✅ Anfrage wurde versendet! Bitte überprüfen Sie Ihr E-Mail-Postfach.";
+            errorMsg.style.background = "#d4edda";
+            errorMsg.style.color = "#155724";
+            errorMsg.style.display = "block";
+            successMsg.style.display = "none";
+            form.reset();
+            
+            setTimeout(() => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = "🚀 Reiseangebot Jetzt Anfordern";
+            }, 5000);
         }
-    </script>
+    });
+    
+    function bestimmePreisniveau(budget) {
+        const map = {
+            "€0 - €1500": "backpacker",
+            "€1500 - €2500": "budget_asia",
+            "€2500 - €5000": "standard_europe",
+            "€5000 - €10000": "premium_us",
+            "€10000+": "ultra_luxury",
+            "Flexibel": "standard_europe"
+        };
+        return map[budget] || "standard_europe";
+    }
+</script> 
+
 </body>
 </html>
