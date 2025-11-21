@@ -15,80 +15,98 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 40px 20px;
         }
         
-        .container {
+        .main-container {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+        
+        .page {
             background: white;
             border-radius: 15px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 900px;
-            margin: 0 auto;
-            overflow: hidden;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-        }
-        
-        .form-side {
-            padding: 40px 30px;
-            overflow-y: auto;
-            max-height: 100vh;
-        }
-        
-        .summary-side {
-            background: linear-gradient(135deg, #1a472a 0%, #2d5f45 100%);
-            color: white;
-            padding: 40px 30px;
-            overflow-y: auto;
-            max-height: 100vh;
+            padding: 50px;
             display: none;
         }
         
-        .summary-side.active {
+        .page.active {
             display: block;
+            animation: fadeIn 0.5s ease-in;
         }
         
-        .form-side.hidden {
-            display: none;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        .header-form {
-            margin-bottom: 30px;
+        /* HEADER */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid #667eea;
         }
         
-        .header-form h1 {
-            font-size: 28px;
+        .header h1 {
+            font-size: 36px;
             color: #1a472a;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            color: #666;
+            font-style: italic;
             margin-bottom: 5px;
         }
         
-        .header-form p {
+        .header .tagline {
             font-size: 14px;
-            color: #666;
-            font-style: italic;
+            color: #667eea;
+            font-weight: 600;
         }
         
+        /* FORM PAGE */
         .form-section {
-            margin-bottom: 25px;
+            margin-bottom: 35px;
         }
         
         .form-section h3 {
-            font-size: 16px;
+            font-size: 18px;
             color: #1a472a;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
             border-bottom: 2px solid #667eea;
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-section h3::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 22px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin-right: 15px;
+            border-radius: 2px;
         }
         
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 12px;
+            gap: 20px;
+            margin-bottom: 15px;
         }
         
         .form-row.full {
             grid-template-columns: 1fr;
+        }
+        
+        .form-row.three {
+            grid-template-columns: 1fr 1fr 1fr;
         }
         
         .form-group {
@@ -97,22 +115,23 @@
         }
         
         label {
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 700;
             color: #333;
-            margin-bottom: 6px;
+            margin-bottom: 10px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
         }
         
         input[type="text"],
         input[type="email"],
+        input[type="date"],
         select,
         textarea {
-            padding: 10px;
+            padding: 14px;
             border: 2px solid #e0e0e0;
-            border-radius: 6px;
-            font-size: 13px;
+            border-radius: 8px;
+            font-size: 14px;
             font-family: inherit;
             transition: all 0.3s ease;
             background: #f9f9f9;
@@ -120,62 +139,57 @@
         
         input[type="text"]:focus,
         input[type="email"]:focus,
+        input[type="date"]:focus,
         select:focus,
         textarea:focus {
             outline: none;
             border-color: #667eea;
             background: white;
-            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
-        }
-        
-        input[type="text"].error,
-        input[type="email"].error,
-        select.error {
-            border-color: #e74c3c;
-            background: #ffe6e6;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
         
         textarea {
             resize: vertical;
-            min-height: 60px;
+            min-height: 80px;
         }
         
         .checkbox-group {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 8px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 10px;
         }
         
         .checkbox-group label {
             display: flex;
             align-items: center;
-            font-size: 12px;
+            font-size: 13px;
             text-transform: none;
             cursor: pointer;
             margin-bottom: 0;
             font-weight: 500;
+            text-transform: capitalize;
         }
         
         .checkbox-group input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-            margin-right: 8px;
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
             cursor: pointer;
             accent-color: #667eea;
         }
         
         .radio-group {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            margin-top: 8px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 10px;
         }
         
         .radio-group label {
             display: flex;
             align-items: center;
-            font-size: 12px;
+            font-size: 13px;
             text-transform: none;
             cursor: pointer;
             margin-bottom: 0;
@@ -185,7 +199,7 @@
         .radio-group input[type="radio"] {
             width: 16px;
             height: 16px;
-            margin-right: 8px;
+            margin-right: 10px;
             cursor: pointer;
             accent-color: #667eea;
         }
@@ -197,11 +211,11 @@
         .error-message {
             background: #f8d7da;
             color: #721c24;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
             border-left: 4px solid #e74c3c;
-            font-size: 13px;
+            font-size: 14px;
             display: none;
         }
         
@@ -210,195 +224,309 @@
         }
         
         .form-footer {
-            margin-top: 25px;
-            padding-top: 15px;
+            margin-top: 35px;
+            padding-top: 25px;
             border-top: 2px solid #e0e0e0;
         }
         
         button[type="submit"] {
             width: 100%;
-            padding: 12px;
+            padding: 16px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 6px;
-            font-size: 14px;
+            border-radius: 8px;
+            font-size: 16px;
             font-weight: 700;
+            letter-spacing: 1px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
         
         button[type="submit"]:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
         }
         
-        /* SUMMARY SIDE */
+        /* SUMMARY PAGE */
         .summary-header {
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid rgba(255,255,255,0.2);
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid #667eea;
         }
         
         .summary-header h2 {
-            font-size: 24px;
-            margin-bottom: 5px;
+            font-size: 32px;
+            color: #1a472a;
+            margin-bottom: 10px;
         }
         
         .summary-header p {
-            font-size: 14px;
-            opacity: 0.9;
+            font-size: 16px;
+            color: #666;
         }
         
         .summary-section {
-            margin-bottom: 25px;
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
         }
         
         .summary-section h3 {
-            font-size: 16px;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid rgba(255,255,255,0.2);
+            font-size: 18px;
+            color: #1a472a;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
         }
         
-        .summary-info {
-            font-size: 13px;
-            line-height: 1.8;
+        .summary-section h3::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 22px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin-right: 12px;
+            border-radius: 2px;
         }
         
-        .summary-info strong {
+        .journey-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .journey-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .journey-item strong {
+            color: #1a472a;
             display: block;
-            margin-bottom: 3px;
+            margin-bottom: 5px;
+        }
+        
+        .journey-item span {
+            font-size: 14px;
+            color: #666;
         }
         
         .route-table {
             width: 100%;
-            font-size: 12px;
             border-collapse: collapse;
-            margin-bottom: 15px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 6px;
+            background: white;
+            border-radius: 8px;
             overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         
         .route-table th {
-            background: rgba(255,255,255,0.2);
-            padding: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 14px;
             text-align: left;
             font-weight: 600;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         
         .route-table td {
-            padding: 8px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 14px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 14px;
         }
         
-        .price-list {
-            background: rgba(255,255,255,0.1);
-            padding: 12px;
-            border-radius: 6px;
-            font-size: 13px;
-        }
-        
-        .price-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 6px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .price-item:last-child {
+        .route-table tr:last-child td {
             border-bottom: none;
         }
         
-        .price-total {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            font-size: 16px;
+        .route-table tr:hover {
+            background: #f9f9f9;
+        }
+        
+        .service-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .service-card h4 {
+            color: #1a472a;
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+        
+        .service-card p {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+        
+        .service-rating {
+            font-size: 12px;
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .price-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .price-table td {
+            padding: 14px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 14px;
+        }
+        
+        .price-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .price-label {
+            font-weight: 600;
+            color: #1a472a;
+        }
+        
+        .price-value {
+            text-align: right;
+            color: #667eea;
             font-weight: 700;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 2px solid rgba(255,255,255,0.3);
+            font-size: 15px;
+        }
+        
+        .total-price {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .contact-box {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            border: 2px solid #667eea;
         }
         
         .contact-info {
-            background: rgba(255,255,255,0.1);
-            padding: 15px;
-            border-radius: 6px;
-            font-size: 12px;
-            line-height: 1.6;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 20px;
         }
         
-        .contact-info a {
-            color: #fff;
+        .contact-item {
+            font-size: 14px;
+        }
+        
+        .contact-item strong {
+            display: block;
+            color: #1a472a;
+            margin-bottom: 5px;
+            font-size: 15px;
+        }
+        
+        .contact-item a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .contact-item a:hover {
             text-decoration: underline;
         }
         
         .action-buttons {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 15px;
+            margin-top: 30px;
         }
         
         .btn {
-            padding: 12px;
+            padding: 16px;
             border: none;
-            border-radius: 6px;
-            font-size: 12px;
+            border-radius: 8px;
+            font-size: 15px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
             text-align: center;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
         .btn-contact {
-            background: #fff;
-            color: #1a472a;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
         
         .btn-contact:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
         }
         
         .btn-back {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: 2px solid white;
+            background: #e0e0e0;
+            color: #333;
         }
         
         .btn-back:hover {
-            background: rgba(255,255,255,0.3);
+            background: #d0d0d0;
         }
         
-        @media (max-width: 1000px) {
-            .container {
-                grid-template-columns: 1fr;
+        @media (max-width: 900px) {
+            .main-container {
+                max-width: 100%;
             }
             
-            .form-side,
-            .summary-side {
-                max-height: none;
-                padding: 30px 20px;
+            .page {
+                padding: 30px;
             }
             
             .form-row {
                 grid-template-columns: 1fr;
             }
             
+            .form-row.three {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .radio-group {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
             .checkbox-group {
                 grid-template-columns: 1fr;
             }
             
-            .radio-group {
-                grid-template-columns: 1fr 1fr;
+            .journey-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-info {
+                grid-template-columns: 1fr;
             }
             
             .action-buttons {
@@ -408,12 +536,13 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- FORMULAR SEITE (LINKS) -->
-        <div class="form-side" id="formSide">
-            <div class="header-form">
+    <div class="main-container">
+        <!-- FORMULAR SEITE -->
+        <div class="page active" id="formPage">
+            <div class="header">
                 <h1>🏛️ GRAND TOUR VIENNA</h1>
                 <p>Klassische Reisen, modernes Erleben</p>
+                <div class="tagline">✨ Wo Ihre Reise zur Grand Tour wird</div>
             </div>
             
             <div id="errorMessage" class="error-message">
@@ -436,16 +565,16 @@
                     </div>
                 </div>
                 
-                <!-- REISEZIEL & DAUER -->
+                <!-- REISEZIEL & ZEITRAUM -->
                 <div class="form-section">
-                    <h3>Reiseziel & Planung</h3>
+                    <h3>Reiseziel & Zeitraum</h3>
                     <div class="form-row full">
                         <div class="form-group">
                             <label>Wohin soll die Reise gehen? <span class="required">*</span></label>
-                            <input type="text" id="reiseziel" placeholder="z.B. Thailand, Barcelona, Island..." required>
+                            <input type="text" id="reiseziel" placeholder="z.B. Thailand, Barcelona, Wien, Rom, Machu Picchu..." required>
                         </div>
                     </div>
-                    <div class="form-row">
+                    <div class="form-row three">
                         <div class="form-group">
                             <label>Reisedauer <span class="required">*</span></label>
                             <select id="dauer" required>
@@ -455,7 +584,6 @@
                                 <option value="7 Tage / 6 Nächte">7 Tage / 6 Nächte</option>
                                 <option value="10 Tage / 9 Nächte">10 Tage / 9 Nächte</option>
                                 <option value="14 Tage / 13 Nächte">14 Tage / 13 Nächte</option>
-                                <option value="21 Tage / 20 Nächte">21 Tage / 20 Nächte</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -463,13 +591,14 @@
                             <select id="personenanzahl" required>
                                 <option value="">-- Bitte wählen --</option>
                                 <option value="1 Person">1 Person</option>
-                                <option value="2 Erwachsene">2 Erwachsene</option>
-                                <option value="3 Erwachsene">3 Erwachsene</option>
-                                <option value="4 Erwachsene">4 Erwachsene</option>
-                                <option value="2 Erwachsene + 1 Kind">2 Erwachsene + 1 Kind</option>
-                                <option value="2 Erwachsene + 2 Kinder">2 Erwachsene + 2 Kinder</option>
-                                <option value="Gruppe (5+)">Gruppe (5+)</option>
+                                <option value="2 Erwachsene">2 Erwachsene (Paar)</option>
+                                <option value="3-4 Erwachsene">3-4 Erwachsene</option>
+                                <option value="Gruppe (5+)">Gruppe (5+ Personen)</option>
                             </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Startdatum <span class="required">*</span></label>
+                            <input type="date" id="startdatum" required>
                         </div>
                     </div>
                 </div>
@@ -479,153 +608,310 @@
                     <h3>Ihre Interessen <span class="required">*</span></h3>
                     <div class="checkbox-group">
                         <label><input type="checkbox" name="interessen" value="Kultur"> Kultur & Geschichte</label>
-                        <label><input type="checkbox" name="interessen" value="Strand"> Strand & Entspannung</label>
-                        <label><input type="checkbox" name="interessen" value="Wandern"> Wandern & Natur</label>
-                        <label><input type="checkbox" name="interessen" value="Abenteuer"> Abenteuer & Action</label>
-                        <label><input type="checkbox" name="interessen" value="Kulinarik"> Kulinarik & Genuss</label>
+                        <label><input type="checkbox" name="interessen" value="Kulinarik"> Kulinarik & Feinschmecker</label>
+                        <label><input type="checkbox" name="interessen" value="Luxus"> Luxus & Komfort</label>
                         <label><input type="checkbox" name="interessen" value="Wellness"> Wellness & Spa</label>
+                        <label><input type="checkbox" name="interessen" value="Abenteuer"> Abenteuer & Sport</label>
+                        <label><input type="checkbox" name="interessen" value="Natur"> Natur & Wandern</label>
                     </div>
                 </div>
                 
                 <!-- BUDGET -->
                 <div class="form-section">
-                    <h3>Gesamtbudget (ohne Flüge) <span class="required">*</span></h3>
+                    <h3>Gesamtbudget (ohne internationale Flüge) <span class="required">*</span></h3>
                     <div class="radio-group">
                         <label><input type="radio" name="budget_gesamt" value="€0 - €1500"> Bis €1.500</label>
                         <label><input type="radio" name="budget_gesamt" value="€1500 - €2500"> €1.500-€2.500</label>
                         <label><input type="radio" name="budget_gesamt" value="€2500 - €5000"> €2.500-€5.000</label>
                     </div>
-                    <div class="radio-group" style="margin-top: 8px;">
-                        <label><input type="radio" name="budget_gesamt" value="€5000 - €10000"> €5K-€10K</label>
-                        <label><input type="radio" name="budget_gesamt" value="€10000+"> €10.000+</label>
-                        <label><input type="radio" name="budget_gesamt" value="Flexibel"> Flexibel</label>
+                    <div class="radio-group" style="margin-top: 12px;">
+                        <label><input type="radio" name="budget_gesamt" value="€5000 - €10000"> €5.000-€10.000</label>
+                        <label><input type="radio" name="budget_gesamt" value="€10000 - €20000"> €10.000-€20.000</label>
+                        <label><input type="radio" name="budget_gesamt" value="€20000+"> €20.000+</label>
                     </div>
                 </div>
                 
                 <!-- ZUSÄTZLICHE WÜNSCHE -->
                 <div class="form-section">
                     <h3>Zusätzliche Wünsche</h3>
-                    <textarea id="besonderheiten" placeholder="z.B. Vegetarisch, Honeymoon, Familienfreundlich..."></textarea>
+                    <div class="form-row full">
+                        <div class="form-group">
+                            <label>Haben Sie spezielle Wünsche? (Vegetarisch, Flitterwoche, etc.)</label>
+                            <textarea id="besonderheiten" placeholder="Teilen Sie uns Ihre besonderen Anforderungen mit..."></textarea>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="form-footer">
-                    <button type="submit">🚀 Zusammenfassung Anzeigen</button>
+                    <button type="submit">🚀 Meine Reisezusammenfassung Anzeigen</button>
                 </div>
             </form>
         </div>
         
-        <!-- ZUSAMMENFASSUNG SEITE (RECHTS) -->
-        <div class="summary-side" id="summarySide">
+        <!-- ZUSAMMENFASSUNG SEITE -->
+        <div class="page" id="summaryPage">
             <div class="summary-header">
-                <h2>🎉 Ihre Traumreise!</h2>
+                <h2>🎉 Ihre Traumreise wartet!</h2>
                 <p id="summaryGreeting"></p>
             </div>
             
+            <!-- ÜBERBLICK -->
             <div class="summary-section">
-                <h3>📍 Auf einen Blick</h3>
-                <div class="summary-info">
-                    <strong>Ziel:</strong> <span id="summaryZiel"></span><br>
-                    <strong>Dauer:</strong> <span id="summaryDauer"></span><br>
-                    <strong>Personen:</strong> <span id="summaryPersonen"></span><br>
-                    <strong>Interessen:</strong> <span id="summaryInteressen"></span><br>
-                    <strong>Budget:</strong> <span id="summaryBudget"></span>
+                <h3>📍 Reise auf einen Blick</h3>
+                <div class="journey-grid">
+                    <div class="journey-item">
+                        <strong>Destination</strong>
+                        <span id="summaryZiel"></span>
+                    </div>
+                    <div class="journey-item">
+                        <strong>Datum</strong>
+                        <span id="summaryDatum"></span>
+                    </div>
+                    <div class="journey-item">
+                        <strong>Dauer</strong>
+                        <span id="summaryDauer"></span>
+                    </div>
+                    <div class="journey-item">
+                        <strong>Personenanzahl</strong>
+                        <span id="summaryPersonen"></span>
+                    </div>
                 </div>
             </div>
             
+            <!-- FLÜGE -->
             <div class="summary-section">
-                <h3>🗺️ Beispiel-Route</h3>
+                <h3>✈️ Flugempfehlungen</h3>
+                <div id="flightsContainer"></div>
+            </div>
+            
+            <!-- ROUTE -->
+            <div class="summary-section">
+                <h3>🗺️ Tagesweise Route</h3>
                 <table class="route-table" id="routeTable">
                     <thead>
                         <tr>
                             <th>Tag</th>
                             <th>Ort</th>
                             <th>Aktivitäten</th>
+                            <th>Übernachtung</th>
                         </tr>
                     </thead>
                     <tbody id="routeBody"></tbody>
                 </table>
             </div>
             
+            <!-- HOTELS -->
             <div class="summary-section">
-                <h3>💰 Preisübersicht</h3>
-                <div class="price-list">
-                    <div class="price-item">
-                        <span>🏨 Unterkunft</span>
-                        <span id="priceUnt"></span>
-                    </div>
-                    <div class="price-item">
-                        <span>🎭 Aktivitäten</span>
-                        <span id="priceAkt"></span>
-                    </div>
-                    <div class="price-item">
-                        <span>✈️ Transfers</span>
-                        <span id="priceTrf"></span>
-                    </div>
-                    <div class="price-total">
-                        <span>Gesamt:</span>
-                        <span id="priceTotal"></span>
+                <h3>🏨 Ausgewählte Hotels</h3>
+                <div id="hotelsContainer"></div>
+            </div>
+            
+            <!-- RESTAURANTS -->
+            <div class="summary-section">
+                <h3>🍽️ Empfohlene Restaurants</h3>
+                <div id="restaurantsContainer"></div>
+            </div>
+            
+            <!-- PREISDETAILS -->
+            <div class="summary-section">
+                <h3>💰 Preisdetails</h3>
+                <table class="price-table">
+                    <tr>
+                        <td class="price-label">✈️ Flüge (pro Person)</td>
+                        <td class="price-value"><span id="priceFlights"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="price-label">🏨 Hotels (alle Nächte)</td>
+                        <td class="price-value"><span id="priceHotels"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="price-label">🍽️ Restaurants & Kulinarik</td>
+                        <td class="price-value"><span id="priceRestaurants"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="price-label">🎭 Aktivitäten & Touren</td>
+                        <td class="price-value"><span id="priceActivities"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="price-label">✈️ Transfers & Logistik</td>
+                        <td class="price-value"><span id="priceTransfers"></span></td>
+                    </tr>
+                </table>
+                
+                <div class="total-price" id="totalPrice"></div>
+            </div>
+            
+            <!-- LEISTUNGEN -->
+            <div class="summary-section">
+                <h3>✅ Im Preis enthalten</h3>
+                <ul style="margin-left: 20px; line-height: 1.8; font-size: 14px;">
+                    <li>✈️ Flüge (Economy) nach Destination</li>
+                    <li>🏨 4-5 Sterne Hotels mit Frühstück</li>
+                    <li>🍽️ Spitzengastronomie-Führung</li>
+                    <li>🚗 Private Transfers & Mietfahrzeug</li>
+                    <li>🎫 Eintritte Sehenswürdigkeiten</li>
+                    <li>🗽 Geführte Premium-Touren</li>
+                    <li>👨‍💼 Persönlicher Travel Concierge</li>
+                </ul>
+            </div>
+            
+            <!-- KONTAKT -->
+            <div class="summary-section">
+                <h3>📞 Buchen Sie jetzt!</h3>
+                <div class="contact-box">
+                    <p style="margin-bottom: 15px; font-size: 14px; color: #666;">
+                        Diese Reisezusammenfassung gefällt Ihnen? Kontaktieren Sie uns sofort zur Buchung oder für persönliche Anpassungen!
+                    </p>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <strong>📧 Email</strong>
+                            <a href="mailto:info@grandtourvienna.at">info@grandtourvienna.at</a>
+                        </div>
+                        <div class="contact-item">
+                            <strong>☎️ Telefon</strong>
+                            +43 (0)1 5880-8888
+                        </div>
+                        <div class="contact-item">
+                            <strong>🏢 Adresse</strong>
+                            Stephansplatz 5<br>1010 Wien, Österreich
+                        </div>
+                        <div class="contact-item">
+                            <strong>🌐 Website</strong>
+                            <a href="https://www.grandtourvienna.at">www.grandtourvienna.at</a>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <div class="summary-section">
-                <h3>📞 Kontaktieren Sie uns!</h3>
-                <div class="contact-info">
-                    📧 <strong>Email:</strong> <a href="mailto:info@grandtourvienna.at">info@grandtourvienna.at</a><br><br>
-                    ☎️ <strong>Telefon:</strong> +43 (0)1 XXXX-XXXX<br><br>
-                    🏢 <strong>Adresse:</strong> Stephansplatz 5, 1010 Wien<br><br>
-                    🌐 <strong>Website:</strong> <a href="https://www.grandtourvienna.at">www.grandtourvienna.at</a>
-                </div>
-            </div>
-            
+            <!-- BUTTONS -->
             <div class="action-buttons">
                 <button class="btn btn-contact" onclick="bookNow()">📧 Jetzt Buchen</button>
-                <button class="btn btn-back" onclick="goBackToForm()">← Zurück</button>
+                <button class="btn btn-back" onclick="goBackToForm()">← Zurück zum Formular</button>
             </div>
         </div>
     </div>
     
     <script>
-        // Beispiel-Routen
-        const routes = {
+        // FLÜGE DATENBANK
+        const flights = {
             'thailand': [
-                { day: 1, location: 'Bangkok', activities: 'Grand Palace, Floating Markets' },
-                { day: 2, location: 'Bangkok', activities: 'Thai-Kochkurs, Stadtrundgang' },
-                { day: 3, location: 'Chiang Mai', activities: 'Tempel-Tour, Night Bazaar' },
-                { day: 4, location: 'Chiang Mai', activities: 'Wellness-Massage, Elefanten' },
-                { day: 5, location: 'Abreise', activities: 'Rückreise' }
+                { airline: '✈️ Thai Airways', departure: 'Wien → Bangkok', duration: '11h', price: 680 },
+                { airline: '✈️ Lufthansa', departure: 'Wien → Bangkok', duration: '13h (1 Stopp)', price: 520 },
+                { airline: '✈️ Turkish Airlines', departure: 'Wien → Bangkok', duration: '12h (1 Stopp)', price: 490 }
             ],
             'barcelona': [
-                { day: 1, location: 'Barcelona', activities: 'Sagrada Familia, Park Güell' },
-                { day: 2, location: 'Barcelona', activities: 'Gothic Quarter, Tapas-Tour' },
-                { day: 3, location: 'Barcelona', activities: 'Strandtag, Freizeit' },
-                { day: 4, location: 'Barcelona', activities: 'Museen & Shopping' },
-                { day: 5, location: 'Abreise', activities: 'Abreise' }
+                { airline: '✈️ Lufthansa', departure: 'Wien → Barcelona', duration: '2h 15min', price: 180 },
+                { airline: '✈️ Austrian Airlines', departure: 'Wien → Barcelona', duration: '2h 15min', price: 200 },
+                { airline: '✈️ Ryanair', departure: 'Wien → Barcelona', duration: '2h 15min', price: 120 }
+            ],
+            'rom': [
+                { airline: '✈️ Alitalia', departure: 'Wien → Rom', duration: '2h 10min', price: 150 },
+                { airline: '✈️ Lufthansa', departure: 'Wien → Rom', duration: '2h 30min (1 Stopp)', price: 140 },
+                { airline: '✈️ Austrian Airlines', departure: 'Wien → Rom', duration: '2h 10min', price: 170 }
             ],
             'default': [
-                { day: 1, location: 'Hauptstadt', activities: 'Stadtrundgang, Highlights' },
-                { day: 2, location: 'Nebenort', activities: 'Touren & Aktivitäten' },
-                { day: 3, location: 'Nebenort', activities: 'Natur & Entspannung' },
-                { day: 4, location: 'Highlights', activities: 'Letzte Aktivitäten' },
-                { day: 5, location: 'Abreise', activities: 'Rückreise' }
+                { airline: '✈️ Lufthansa', departure: 'Wien → Ziel', duration: 'ca. 2-3 Stunden', price: 200 },
+                { airline: '✈️ Austrian Airlines', departure: 'Wien → Ziel', duration: 'ca. 2-3 Stunden', price: 220 },
+                { airline: '✈️ Air Europe', departure: 'Wien → Ziel', duration: 'ca. 2-3 Stunden', price: 180 }
             ]
         };
         
-        function getRoute(destination) {
-            const key = destination.toLowerCase().substring(0, 3);
-            return routes[key] || routes['default'];
+        // HOTELS DATENBANK (Falstaff-Standard)
+        const hotels = {
+            'thailand': [
+                { name: 'Mandarin Oriental Bangkok', stars: '★★★★★', desc: 'Legendäres Luxushotel an der Chao Phraya, renommiert für Service', price: 450, city: 'Bangkok' },
+                { name: 'Four Seasons Chiang Mai', stars: '★★★★★', desc: 'Exklusive Resort-Anlage, Private Pools, Premium Wellness', price: 320, city: 'Chiang Mai' },
+                { name: 'Angsana Laguna Phuket', stars: '★★★★', desc: 'Strandhotel mit Lagune, Spa & Restaurants', price: 180, city: 'Phuket' }
+            ],
+            'barcelona': [
+                { name: 'Mandarin Oriental Barcelona', stars: '★★★★★', desc: 'Ultra-Luxus Boutique-Hotel, Michelin-Sterne-Restaurant', price: 380, city: 'Barcelona' },
+                { name: 'Ohla Barcelona', stars: '★★★★★', desc: 'Design-Hotel Gothic Quarter, moderner Luxus', price: 320, city: 'Barcelona' },
+                { name: 'Hotel Arts Barcelona', stars: '★★★★★', desc: 'Olympisches Hochhaus-Hotel am Strand', price: 350, city: 'Barcelona' }
+            ],
+            'rom': [
+                { name: 'Hotel Eden Rome', stars: '★★★★★', desc: 'Luxushotel mit Dachterrasse & Panoramablick', price: 400, city: 'Rom' },
+                { name: 'Hassler Roma', stars: '★★★★★', desc: 'Legendäres Hotel bei der Spanischen Treppe, seit 1893', price: 420, city: 'Rom' },
+                { name: 'Hotel de Russie', stars: '★★★★★', desc: 'Elegantes Boutique-Hotel, historischer Charme', price: 380, city: 'Rom' }
+            ],
+            'default': [
+                { name: 'Premium 5-Sterne Hotel', stars: '★★★★★', desc: 'Luxus-Unterkunft mit Weltklasse-Service & Ausstattung', price: 350, city: 'Hauptstadt' },
+                { name: 'Luxury 4-Sterne Hotel', stars: '★★★★', desc: 'Gehobenes Hotel mit exzellentem Restaurant', price: 220, city: 'Hauptstadt' }
+            ]
+        };
+        
+        // RESTAURANTS DATENBANK (Falstaff-Standard)
+        const restaurants = {
+            'thailand': [
+                { name: 'Gaggan Bangkok', stars: 'Michelin ★★★', desc: 'Progressive Thai Cuisine, Top 50 Asia Restaurants', city: 'Bangkok', cuisine: 'Thai Moderne' },
+                { name: 'Nahm', stars: 'Michelin ★', desc: 'Klassische Thai-Küche, konserviertes Erbe der Aromaten', city: 'Bangkok', cuisine: 'Authentisch Thai' },
+                { name: 'Chiang Mai Classics', stars: '★★★★', desc: 'Traditionelle Chiang Mai Spezialitäten & Massaman', city: 'Chiang Mai', cuisine: 'Nordthai' }
+            ],
+            'barcelona': [
+                { name: 'El Bulli (Tickets Bar)', stars: 'Michelin ★★★', desc: 'Avantgarde-Tapas vom legendären El Bulli Team', city: 'Barcelona', cuisine: 'Moderne Tapas' },
+                { name: 'ABaC', stars: 'Michelin ★★', desc: 'Puristische katalanische Haute Cuisine', city: 'Barcelona', cuisine: 'Katalanisch' },
+                { name: 'Kisko by Botafumeiro', stars: 'Michelin ★', desc: 'Galicia Meeresfrüchte, Top Fisch-Restaurant', city: 'Barcelona', cuisine: 'Galicia' }
+            ],
+            'rom': [
+                { name: 'Heinz Beck (Pergola)', stars: 'Michelin ★★', desc: 'Moderne italienische Haute Cuisine mit Blick aufs Rom', city: 'Rom', cuisine: 'Italienisch Modern' },
+                { name: 'Flavio al Velavevodetto', stars: 'Michelin ★', desc: 'Authentische römische Küche, traditionell', city: 'Rom', cuisine: 'Römisch' },
+                { name: 'Armando al Pantheon', stars: '★★★★★', desc: 'Legendäre Cacio e Pepe, seit 1961', city: 'Rom', cuisine: 'Klassisch Römisch' }
+            ],
+            'default': [
+                { name: 'Premium Restaurant 1', stars: 'Michelin ★★', desc: 'Hochmoderne Kulinarik, innovative Techniken', city: 'Hauptstadt', cuisine: 'Modern' },
+                { name: 'Premium Restaurant 2', stars: 'Michelin ★', desc: 'Regionale Spezialitäten auf höchstem Niveau', city: 'Hauptstadt', cuisine: 'Regional' }
+            ]
+        };
+        
+        // TOUREN & AKTIVITÄTEN
+        const routes = {
+            'thailand': [
+                { day: 1, location: 'Bangkok', activities: 'Grand Palace, Wat Phra Kaew, Floating Markets', hotel: 'Mandarin Oriental Bangkok' },
+                { day: 2, location: 'Bangkok', activities: 'Thai-Kochkurs, Chao Phraya Dinner Cruise', hotel: 'Mandarin Oriental Bangkok' },
+                { day: 3, location: 'Chiang Mai', activities: 'Tempel-Tour, Old City Walking Tour', hotel: 'Four Seasons Chiang Mai' },
+                { day: 4, location: 'Chiang Mai', activities: 'Elefanten Sanctuary, Wellness-Massage', hotel: 'Four Seasons Chiang Mai' },
+                { day: 5, location: 'Bangkok', activities: 'Abreise', hotel: '-' }
+            ],
+            'barcelona': [
+                { day: 1, location: 'Barcelona', activities: 'Sagrada Familia, Park Güell', hotel: 'Mandarin Oriental Barcelona' },
+                { day: 2, location: 'Barcelona', activities: 'Gothic Quarter, Picasso Museum, Tapas-Tour', hotel: 'Mandarin Oriental Barcelona' },
+                { day: 3, location: 'Barcelona', activities: 'Montjuïc, Design Museum, Freizeit', hotel: 'Mandarin Oriental Barcelona' },
+                { day: 4, location: 'Barcelona', activities: 'Montserrat Day Trip, Weingut', hotel: 'Mandarin Oriental Barcelona' },
+                { day: 5, location: 'Barcelona', activities: 'Abreise', hotel: '-' }
+            ],
+            'rom': [
+                { day: 1, location: 'Rom', activities: 'Kolosseum, Forum Romanum, Palatinhügel', hotel: 'Hotel Eden Rome' },
+                { day: 2, location: 'Rom', activities: 'Pantheon, Trevi-Brunnen, Spanische Treppe', hotel: 'Hotel Eden Rome' },
+                { day: 3, location: 'Rom', activities: 'Petersdom, Vatikan Museen', hotel: 'Hotel Eden Rome' },
+                { day: 4, location: 'Rom', activities: 'Villa Borghese, Trastevere Walking Tour, Weinkeller-Besuch', hotel: 'Hotel Eden Rome' },
+                { day: 5, location: 'Rom', activities: 'Abreise', hotel: '-' }
+            ],
+            'default': [
+                { day: 1, location: 'Hauptstadt', activities: 'Stadtrundgang, Hauptsehenswürdigkeiten', hotel: 'Premium Hotel' },
+                { day: 2, location: 'Zentral', activities: 'Museums-Tour, Kulinarik-Erlebnis', hotel: 'Premium Hotel' },
+                { day: 3, location: 'Umgebung', activities: 'Natur & Aktivitäten', hotel: 'Premium Hotel' },
+                { day: 4, location: 'Highlights', activities: 'Letzte Abenteuer', hotel: 'Premium Hotel' },
+                { day: 5, location: 'Abreise', activities: 'Rückreise', hotel: '-' }
+            ]
+        };
+        
+        function getKey(destination) {
+            const lower = destination.toLowerCase();
+            if (lower.includes('thai')) return 'thailand';
+            if (lower.includes('barc') || lower.includes('span')) return 'barcelona';
+            if (lower.includes('rom') || lower.includes('ital')) return 'rom';
+            return 'default';
         }
         
         function getPrices(budget) {
-            const prices = {
-                '€0 - €1500': { unt: '€320', akt: '€180', trf: '€200', total: '€700' },
-                '€1500 - €2500': { unt: '€550', akt: '€350', trf: '€300', total: '€1.200' },
-                '€2500 - €5000': { unt: '€900', akt: '€600', trf: '€500', total: '€2.000' },
-                '€5000 - €10000': { unt: '€1.800', akt: '€1.200', trf: '€1.000', total: '€4.000' },
-                '€10000+': { unt: '€3.000', akt: '€2.000', trf: '€1.500', total: '€6.500' },
-                'Flexibel': { unt: '€700', akt: '€450', trf: '€400', total: '€1.550' }
+            const pricing = {
+                '€0 - €1500': { flights: 400, hotels: 600, restaurants: 250, activities: 150, transfers: 100 },
+                '€1500 - €2500': { flights: 550, hotels: 1000, restaurants: 450, activities: 300, transfers: 200 },
+                '€2500 - €5000': { flights: 750, hotels: 1600, restaurants: 700, activities: 600, transfers: 350 },
+                '€5000 - €10000': { flights: 1000, hotels: 2800, restaurants: 1200, activities: 1000, transfers: 500 },
+                '€10000 - €20000': { flights: 1500, hotels: 4500, restaurants: 2000, activities: 1800, transfers: 700 },
+                '€20000+': { flights: 2000, hotels: 6500, restaurants: 3000, activities: 2500, transfers: 1000 }
             };
-            return prices[budget] || prices['Flexibel'];
+            return pricing[budget] || pricing['€5000 - €10000'];
         }
         
         function validateAndShowSummary(event) {
@@ -637,57 +923,135 @@
             const reiseziel = document.getElementById('reiseziel').value;
             const dauer = document.getElementById('dauer').value;
             const personenanzahl = document.getElementById('personenanzahl').value;
+            const startdatum = document.getElementById('startdatum').value;
             const budget = document.querySelector('input[name="budget_gesamt"]:checked');
             const interessen = Array.from(document.querySelectorAll('input[name="interessen"]:checked')).map(x => x.value);
             
-            // Validierung
-            if (!kundenname || !kundenemail || !reiseziel || !dauer || !personenanzahl || !budget || interessen.length === 0) {
+            if (!kundenname || !kundenemail || !reiseziel || !dauer || !personenanzahl || !startdatum || !budget || interessen.length === 0) {
                 errorMsg.classList.add('show');
                 return;
             }
             
             errorMsg.classList.remove('show');
             
-            // Zusammenfassung füllen
-            document.getElementById('summaryGreeting').textContent = `${kundenname}, hier ist Ihre perfekte Reise!`;
+            const key = getKey(reiseziel);
+            const pricing = getPrices(budget.value);
+            const daysCount = parseInt(dauer);
+            
+            // Personen zählen
+            let personCount = 2;
+            if (personenanzahl.includes('1 Person')) personCount = 1;
+            else if (personenanzahl.includes('3')) personCount = 3;
+            else if (personenanzahl.includes('4') || personenanzahl.includes('5')) personCount = 4;
+            
+            // Überblick
+            document.getElementById('summaryGreeting').textContent = `${kundenname}, Ihre perfekte Reise nach ${reiseziel}!`;
             document.getElementById('summaryZiel').textContent = reiseziel;
+            document.getElementById('summaryDatum').textContent = formatDate(startdatum);
             document.getElementById('summaryDauer').textContent = dauer;
             document.getElementById('summaryPersonen').textContent = personenanzahl;
-            document.getElementById('summaryInteressen').textContent = interessen.join(', ');
-            document.getElementById('summaryBudget').textContent = budget.value;
             
-            // Route füllen
-            const route = getRoute(reiseziel);
+            // FLÜGE
+            const flightsList = flights[key] || flights['default'];
+            let flightsHTML = '';
+            flightsList.forEach(flight => {
+                flightsHTML += `
+                    <div class="service-card">
+                        <h4>${flight.airline}</h4>
+                        <p>🛫 ${flight.departure}</p>
+                        <p>⏱️ Flugdauer: ${flight.duration}</p>
+                        <div class="service-rating">💰 ab €${flight.price} pro Person</div>
+                    </div>
+                `;
+            });
+            document.getElementById('flightsContainer').innerHTML = flightsHTML;
+            
+            // ROUTE
+            const route = routes[key] || routes['default'];
             const tbody = document.getElementById('routeBody');
             tbody.innerHTML = '';
             route.forEach(r => {
-                tbody.innerHTML += `<tr><td><strong>Tag ${r.day}</strong></td><td>${r.location}</td><td>${r.activities}</td></tr>`;
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>Tag ${r.day}</strong></td>
+                        <td>${r.location}</td>
+                        <td>${r.activities}</td>
+                        <td>${r.hotel}</td>
+                    </tr>
+                `;
             });
             
-            // Preise füllen
-            const pricing = getPrices(budget.value);
-            document.getElementById('priceUnt').textContent = pricing.unt;
-            document.getElementById('priceAkt').textContent = pricing.akt;
-            document.getElementById('priceTrf').textContent = pricing.trf;
-            document.getElementById('priceTotal').textContent = pricing.total;
+            // HOTELS
+            const hotelsList = hotels[key] || hotels['default'];
+            let hotelsHTML = '';
+            hotelsList.forEach(hotel => {
+                hotelsHTML += `
+                    <div class="service-card">
+                        <h4>${hotel.name} ${hotel.stars}</h4>
+                        <p>${hotel.desc}</p>
+                        <p>📍 ${hotel.city}</p>
+                        <div class="service-rating">💰 €${hotel.price} pro Nacht</div>
+                    </div>
+                `;
+            });
+            document.getElementById('hotelsContainer').innerHTML = hotelsHTML;
+            
+            // RESTAURANTS
+            const restaurantsList = restaurants[key] || restaurants['default'];
+            let restaurantsHTML = '';
+            restaurantsList.forEach(rest => {
+                restaurantsHTML += `
+                    <div class="service-card">
+                        <h4>${rest.name} ${rest.stars}</h4>
+                        <p>${rest.desc}</p>
+                        <p>📍 ${rest.city} • 🍽️ ${rest.cuisine}</p>
+                    </div>
+                `;
+            });
+            document.getElementById('restaurantsContainer').innerHTML = restaurantsHTML;
+            
+            // PREISE
+            const totalFlights = pricing.flights * personCount;
+            const totalHotels = pricing.hotels * daysCount;
+            const totalRestaurants = pricing.restaurants * daysCount;
+            const totalActivities = pricing.activities * daysCount;
+            const totalTransfers = pricing.transfers;
+            const grandTotal = totalFlights + totalHotels + totalRestaurants + totalActivities + totalTransfers;
+            
+            document.getElementById('priceFlights').textContent = '€' + totalFlights;
+            document.getElementById('priceHotels').textContent = '€' + totalHotels;
+            document.getElementById('priceRestaurants').textContent = '€' + totalRestaurants;
+            document.getElementById('priceActivities').textContent = '€' + totalActivities;
+            document.getElementById('priceTransfers').textContent = '€' + totalTransfers;
+            document.getElementById('totalPrice').textContent = '💰 Gesamtpreis: €' + grandTotal;
             
             // Seiten wechseln
-            document.getElementById('formSide').classList.add('hidden');
-            document.getElementById('summarySide').classList.add('active');
+            document.getElementById('formPage').classList.remove('active');
+            document.getElementById('summaryPage').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+        
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString + 'T00:00').toLocaleDateString('de-DE', options);
         }
         
         function goBackToForm() {
-            document.getElementById('formSide').classList.remove('hidden');
-            document.getElementById('summarySide').classList.remove('active');
+            document.getElementById('formPage').classList.add('active');
+            document.getElementById('summaryPage').classList.remove('active');
             window.scrollTo(0, 0);
         }
         
         function bookNow() {
             const email = 'info@grandtourvienna.at';
             const subject = 'Reisebuchung - GRAND TOUR VIENNA';
-            const body = 'Hallo,\n\nICH MÖCHTE MEINE REISE BUCHEN!\n\nBitte kontaktieren Sie mich.\n\nDanke!';
+            const body = 'Hallo,\n\nICH MÖCHTE MEINE TRAUMREISE BUCHEN!\n\nBitte kontaktieren Sie mich schnellstmöglich.\n\nDanke!\n\nMit freundlichen Grüßen';
             window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         }
+        
+        // Minimum-Datum auf heute setzen
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('startdatum').min = today;
     </script>
 </body>
 </html>
