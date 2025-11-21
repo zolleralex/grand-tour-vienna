@@ -15,9 +15,6 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             padding: 20px;
         }
         
@@ -25,69 +22,69 @@
             background: white;
             border-radius: 15px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 700px;
-            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
             overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
         }
         
-        .header {
+        .form-side {
+            padding: 40px 30px;
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+        
+        .summary-side {
             background: linear-gradient(135deg, #1a472a 0%, #2d5f45 100%);
             color: white;
             padding: 40px 30px;
-            text-align: center;
+            overflow-y: auto;
+            max-height: 100vh;
+            display: none;
         }
         
-        .header h1 {
-            font-size: 32px;
-            margin-bottom: 5px;
-            letter-spacing: 1px;
+        .summary-side.active {
+            display: block;
         }
         
-        .header p {
-            font-size: 16px;
-            opacity: 0.9;
-            font-style: italic;
+        .form-side.hidden {
+            display: none;
         }
         
-        .header .tagline {
-            margin-top: 15px;
-            font-size: 14px;
-            opacity: 0.8;
-            border-top: 1px solid rgba(255,255,255,0.2);
-            padding-top: 15px;
-        }
-        
-        .form-content {
-            padding: 40px 30px;
-        }
-        
-        .form-section {
+        .header-form {
             margin-bottom: 30px;
         }
         
-        .form-section h3 {
-            font-size: 18px;
+        .header-form h1 {
+            font-size: 28px;
             color: #1a472a;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
+            margin-bottom: 5px;
         }
         
-        .form-section h3::before {
-            content: '';
-            display: inline-block;
-            width: 4px;
-            height: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            margin-right: 10px;
-            border-radius: 2px;
+        .header-form p {
+            font-size: 14px;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .form-section {
+            margin-bottom: 25px;
+        }
+        
+        .form-section h3 {
+            font-size: 16px;
+            color: #1a472a;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
         }
         
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
+            gap: 12px;
+            margin-bottom: 12px;
         }
         
         .form-row.full {
@@ -100,23 +97,22 @@
         }
         
         label {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 600;
             color: #333;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
         
         input[type="text"],
         input[type="email"],
-        input[type="number"],
         select,
         textarea {
-            padding: 12px 15px;
+            padding: 10px;
             border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 14px;
+            border-radius: 6px;
+            font-size: 13px;
             font-family: inherit;
             transition: all 0.3s ease;
             background: #f9f9f9;
@@ -124,31 +120,37 @@
         
         input[type="text"]:focus,
         input[type="email"]:focus,
-        input[type="number"]:focus,
         select:focus,
         textarea:focus {
             outline: none;
             border-color: #667eea;
             background: white;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+        
+        input[type="text"].error,
+        input[type="email"].error,
+        select.error {
+            border-color: #e74c3c;
+            background: #ffe6e6;
         }
         
         textarea {
             resize: vertical;
-            min-height: 80px;
+            min-height: 60px;
         }
         
         .checkbox-group {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-top: 10px;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 8px;
         }
         
         .checkbox-group label {
             display: flex;
             align-items: center;
-            font-size: 13px;
+            font-size: 12px;
             text-transform: none;
             cursor: pointer;
             margin-bottom: 0;
@@ -156,29 +158,31 @@
         }
         
         .checkbox-group input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            margin-right: 10px;
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
             cursor: pointer;
             accent-color: #667eea;
         }
         
-        .price-range {
+        .radio-group {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 10px;
+            margin-top: 8px;
         }
         
-        .price-range label {
+        .radio-group label {
             display: flex;
             align-items: center;
-            font-size: 13px;
+            font-size: 12px;
             text-transform: none;
             cursor: pointer;
             margin-bottom: 0;
+            font-weight: 500;
         }
         
-        .price-range input[type="radio"] {
+        .radio-group input[type="radio"] {
             width: 16px;
             height: 16px;
             margin-right: 8px;
@@ -188,68 +192,203 @@
         
         .required {
             color: #e74c3c;
-            margin-left: 3px;
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border-left: 4px solid #e74c3c;
+            font-size: 13px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
         }
         
         .form-footer {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 2px solid #f0f0f0;
-        }
-        
-        .form-footer p {
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 15px;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 2px solid #e0e0e0;
         }
         
         button[type="submit"] {
             width: 100%;
-            padding: 15px;
+            padding: 12px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
+            border-radius: 6px;
+            font-size: 14px;
             font-weight: 700;
-            letter-spacing: 1px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        button[type="submit"]:hover {
+            transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
         
-        button[type="submit"]:hover:not(:disabled) {
+        /* SUMMARY SIDE */
+        .summary-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+        }
+        
+        .summary-header h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .summary-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .summary-section {
+            margin-bottom: 25px;
+        }
+        
+        .summary-section h3 {
+            font-size: 16px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+        }
+        
+        .summary-info {
+            font-size: 13px;
+            line-height: 1.8;
+        }
+        
+        .summary-info strong {
+            display: block;
+            margin-bottom: 3px;
+        }
+        
+        .route-table {
+            width: 100%;
+            font-size: 12px;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .route-table th {
+            background: rgba(255,255,255,0.2);
+            padding: 8px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .route-table td {
+            padding: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .price-list {
+            background: rgba(255,255,255,0.1);
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .price-item:last-child {
+            border-bottom: none;
+        }
+        
+        .price-total {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            font-size: 16px;
+            font-weight: 700;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .contact-info {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+        
+        .contact-info a {
+            color: #fff;
+            text-decoration: underline;
+        }
+        
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            text-transform: uppercase;
+        }
+        
+        .btn-contact {
+            background: #fff;
+            color: #1a472a;
+        }
+        
+        .btn-contact:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
         
-        button[type="submit"]:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
+        .btn-back {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
         }
         
-        .success-message {
-            display: none;
-            background: #d4edda;
-            color: #155724;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border-left: 4px solid #28a745;
+        .btn-back:hover {
+            background: rgba(255,255,255,0.3);
         }
         
-        .error-message {
-            display: none;
-            background: #f8d7da;
-            color: #721c24;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border-left: 4px solid #f5c6cb;
-        }
-        
-        @media (max-width: 600px) {
+        @media (max-width: 1000px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-side,
+            .summary-side {
+                max-height: none;
+                padding: 30px 20px;
+            }
+            
             .form-row {
                 grid-template-columns: 1fr;
             }
@@ -258,63 +397,58 @@
                 grid-template-columns: 1fr;
             }
             
-            .price-range {
-                grid-template-columns: repeat(2, 1fr);
+            .radio-group {
+                grid-template-columns: 1fr 1fr;
             }
             
-            .header h1 {
-                font-size: 24px;
-            }
-            
-            .form-content {
-                padding: 25px 20px;
+            .action-buttons {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>🏛️ GRAND TOUR VIENNA</h1>
-            <p>Klassische Reisen, modernes Erleben</p>
-            <div class="tagline">✨ Wo Ihre Reise zur Grand Tour wird</div>
-        </div>
-        
-        <div class="form-content">
-            <div id="successMessage" class="success-message">
-                ✅ Vielen Dank! Ihre Anfrage wurde erfolgreich versendet. Sie erhalten in Kürze Ihr personalisiertes Reiseangebot per E-Mail!
-            </div>
-            <div id="errorMessage" class="error-message">
-                ❌ Fehler beim Absenden. Bitte versuchen Sie es später erneut.
+        <!-- FORMULAR SEITE (LINKS) -->
+        <div class="form-side" id="formSide">
+            <div class="header-form">
+                <h1>🏛️ GRAND TOUR VIENNA</h1>
+                <p>Klassische Reisen, modernes Erleben</p>
             </div>
             
-            <form id="travelForm">
+            <div id="errorMessage" class="error-message">
+                ❌ Bitte füllen Sie alle erforderlichen Felder aus!
+            </div>
+            
+            <form id="travelForm" onsubmit="validateAndShowSummary(event)">
+                <!-- PERSÖNLICHE ANGABEN -->
                 <div class="form-section">
                     <h3>Persönliche Angaben</h3>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Vorname & Name <span class="required">*</span></label>
-                            <input type="text" name="kundenname" placeholder="z.B. Max Mueller" required>
+                            <input type="text" id="kundenname" placeholder="Max Mueller" required>
                         </div>
                         <div class="form-group">
                             <label>E-Mail <span class="required">*</span></label>
-                            <input type="email" name="kundenemail" placeholder="z.B. max@example.com" required>
+                            <input type="email" id="kundenemail" placeholder="max@example.com" required>
                         </div>
                     </div>
                 </div>
                 
+                <!-- REISEZIEL & DAUER -->
                 <div class="form-section">
                     <h3>Reiseziel & Planung</h3>
                     <div class="form-row full">
                         <div class="form-group">
                             <label>Wohin soll die Reise gehen? <span class="required">*</span></label>
-                            <input type="text" name="reiseziel" placeholder="z.B. Thailand, Barcelona, Machu Picchu, Island..." required>
+                            <input type="text" id="reiseziel" placeholder="z.B. Thailand, Barcelona, Island..." required>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Reisedauer <span class="required">*</span></label>
-                            <select name="dauer" required>
+                            <select id="dauer" required>
                                 <option value="">-- Bitte wählen --</option>
                                 <option value="3 Tage / 2 Nächte">3 Tage / 2 Nächte</option>
                                 <option value="5 Tage / 4 Nächte">5 Tage / 4 Nächte</option>
@@ -326,25 +460,23 @@
                         </div>
                         <div class="form-group">
                             <label>Personenanzahl <span class="required">*</span></label>
-                            <select name="personenanzahl" required>
+                            <select id="personenanzahl" required>
                                 <option value="">-- Bitte wählen --</option>
-                                <option value="1 Person">1 Person (Einzelreise)</option>
-                                <option value="2 Erwachsene">2 Erwachsene (Paar)</option>
+                                <option value="1 Person">1 Person</option>
+                                <option value="2 Erwachsene">2 Erwachsene</option>
                                 <option value="3 Erwachsene">3 Erwachsene</option>
                                 <option value="4 Erwachsene">4 Erwachsene</option>
                                 <option value="2 Erwachsene + 1 Kind">2 Erwachsene + 1 Kind</option>
                                 <option value="2 Erwachsene + 2 Kinder">2 Erwachsene + 2 Kinder</option>
-                                <option value="Gruppe (5+)">Gruppe (5 oder mehr)</option>
+                                <option value="Gruppe (5+)">Gruppe (5+)</option>
                             </select>
                         </div>
                     </div>
                 </div>
                 
+                <!-- INTERESSEN -->
                 <div class="form-section">
-                    <h3>Interessen & Budget</h3>
-                    <label style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 8px; display: block; text-transform: uppercase; letter-spacing: 0.5px;">
-                        Was interessiert Sie? <span class="required">*</span>
-                    </label>
+                    <h3>Ihre Interessen <span class="required">*</span></h3>
                     <div class="checkbox-group">
                         <label><input type="checkbox" name="interessen" value="Kultur"> Kultur & Geschichte</label>
                         <label><input type="checkbox" name="interessen" value="Strand"> Strand & Entspannung</label>
@@ -353,133 +485,209 @@
                         <label><input type="checkbox" name="interessen" value="Kulinarik"> Kulinarik & Genuss</label>
                         <label><input type="checkbox" name="interessen" value="Wellness"> Wellness & Spa</label>
                     </div>
-                    
-                    <div style="margin-top: 20px;">
-                        <label style="font-size: 14px; font-weight: 600; color: #333; margin-bottom: 8px; display: block; text-transform: uppercase; letter-spacing: 0.5px;">
-                            Gesamtbudget (ohne internationale Flüge) <span class="required">*</span>
-                        </label>
-                        <div class="price-range">
-                            <label><input type="radio" name="budget_gesamt" value="€0 - €1500"> Bis €1.500</label>
-                            <label><input type="radio" name="budget_gesamt" value="€1500 - €2500"> €1.500-€2.500</label>
-                            <label><input type="radio" name="budget_gesamt" value="€2500 - €5000"> €2.500-€5.000</label>
-                        </div>
-                        <div class="price-range" style="margin-top: 10px;">
-                            <label><input type="radio" name="budget_gesamt" value="€5000 - €10000"> €5K-€10K</label>
-                            <label><input type="radio" name="budget_gesamt" value="€10000+"> €10.000+</label>
-                            <label><input type="radio" name="budget_gesamt" value="Flexibel"> Flexibel</label>
-                        </div>
+                </div>
+                
+                <!-- BUDGET -->
+                <div class="form-section">
+                    <h3>Gesamtbudget (ohne Flüge) <span class="required">*</span></h3>
+                    <div class="radio-group">
+                        <label><input type="radio" name="budget_gesamt" value="€0 - €1500"> Bis €1.500</label>
+                        <label><input type="radio" name="budget_gesamt" value="€1500 - €2500"> €1.500-€2.500</label>
+                        <label><input type="radio" name="budget_gesamt" value="€2500 - €5000"> €2.500-€5.000</label>
+                    </div>
+                    <div class="radio-group" style="margin-top: 8px;">
+                        <label><input type="radio" name="budget_gesamt" value="€5000 - €10000"> €5K-€10K</label>
+                        <label><input type="radio" name="budget_gesamt" value="€10000+"> €10.000+</label>
+                        <label><input type="radio" name="budget_gesamt" value="Flexibel"> Flexibel</label>
                     </div>
                 </div>
                 
+                <!-- ZUSÄTZLICHE WÜNSCHE -->
                 <div class="form-section">
                     <h3>Zusätzliche Wünsche</h3>
-                    <div class="form-row full">
-                        <div class="form-group">
-                            <label>Haben Sie noch Besonderheiten oder Wünsche?</label>
-                            <textarea name="besonderheiten" placeholder="z.B. Vegetarische Verpflegung, Honeymoon, Familienfreundlich..."></textarea>
-                        </div>
-                    </div>
+                    <textarea id="besonderheiten" placeholder="z.B. Vegetarisch, Honeymoon, Familienfreundlich..."></textarea>
                 </div>
                 
                 <div class="form-footer">
-                    <p>Mit dem Absenden akzeptieren Sie unsere Datenschutzerklärung und Nutzungsbedingungen.</p>
-                    <button type="submit">🚀 Reiseangebot Jetzt Anfordern</button>
+                    <button type="submit">🚀 Zusammenfassung Anzeigen</button>
                 </div>
             </form>
         </div>
+        
+        <!-- ZUSAMMENFASSUNG SEITE (RECHTS) -->
+        <div class="summary-side" id="summarySide">
+            <div class="summary-header">
+                <h2>🎉 Ihre Traumreise!</h2>
+                <p id="summaryGreeting"></p>
+            </div>
+            
+            <div class="summary-section">
+                <h3>📍 Auf einen Blick</h3>
+                <div class="summary-info">
+                    <strong>Ziel:</strong> <span id="summaryZiel"></span><br>
+                    <strong>Dauer:</strong> <span id="summaryDauer"></span><br>
+                    <strong>Personen:</strong> <span id="summaryPersonen"></span><br>
+                    <strong>Interessen:</strong> <span id="summaryInteressen"></span><br>
+                    <strong>Budget:</strong> <span id="summaryBudget"></span>
+                </div>
+            </div>
+            
+            <div class="summary-section">
+                <h3>🗺️ Beispiel-Route</h3>
+                <table class="route-table" id="routeTable">
+                    <thead>
+                        <tr>
+                            <th>Tag</th>
+                            <th>Ort</th>
+                            <th>Aktivitäten</th>
+                        </tr>
+                    </thead>
+                    <tbody id="routeBody"></tbody>
+                </table>
+            </div>
+            
+            <div class="summary-section">
+                <h3>💰 Preisübersicht</h3>
+                <div class="price-list">
+                    <div class="price-item">
+                        <span>🏨 Unterkunft</span>
+                        <span id="priceUnt"></span>
+                    </div>
+                    <div class="price-item">
+                        <span>🎭 Aktivitäten</span>
+                        <span id="priceAkt"></span>
+                    </div>
+                    <div class="price-item">
+                        <span>✈️ Transfers</span>
+                        <span id="priceTrf"></span>
+                    </div>
+                    <div class="price-total">
+                        <span>Gesamt:</span>
+                        <span id="priceTotal"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="summary-section">
+                <h3>📞 Kontaktieren Sie uns!</h3>
+                <div class="contact-info">
+                    📧 <strong>Email:</strong> <a href="mailto:info@grandtourvienna.at">info@grandtourvienna.at</a><br><br>
+                    ☎️ <strong>Telefon:</strong> +43 (0)1 XXXX-XXXX<br><br>
+                    🏢 <strong>Adresse:</strong> Stephansplatz 5, 1010 Wien<br><br>
+                    🌐 <strong>Website:</strong> <a href="https://www.grandtourvienna.at">www.grandtourvienna.at</a>
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn btn-contact" onclick="bookNow()">📧 Jetzt Buchen</button>
+                <button class="btn btn-back" onclick="goBackToForm()">← Zurück</button>
+            </div>
+        </div>
     </div>
-<script>
-    document.getElementById("travelForm").addEventListener("submit", async (e) => {
-        e.preventDefault();
-        
-        const form = e.target;
-        const successMsg = document.getElementById("successMessage");
-        const errorMsg = document.getElementById("errorMessage");
-        const submitBtn = form.querySelector('button[type="submit"]');
-        
-        const interessen = Array.from(form.querySelectorAll('input[name="interessen"]:checked'))
-            .map(el => el.value)
-            .join(", ");
-        
-        if (!interessen) {
-            errorMsg.textContent = "❌ Bitte wählen Sie mindestens einen Interessensbereich!";
-            errorMsg.style.display = "block";
-            successMsg.style.display = "none";
-            return;
-        }
-        
-        const budget = form.querySelector('input[name="budget_gesamt"]:checked');
-        if (!budget) {
-            errorMsg.textContent = "❌ Bitte wählen Sie Ihr Budget!";
-            errorMsg.style.display = "block";
-            successMsg.style.display = "none";
-            return;
-        }
-        
-        const formData = {
-            kundenname: form.querySelector('input[name="kundenname"]').value,
-            kundenemail: form.querySelector('input[name="kundenemail"]').value,
-            reiseziel: form.querySelector('input[name="reiseziel"]').value,
-            dauer: form.querySelector('select[name="dauer"]').value,
-            personenanzahl: form.querySelector('select[name="personenanzahl"]').value,
-            budget_gesamt: budget.value,
-            interessen: interessen,
-            preisniveau: bestimmePreisniveau(budget.value),
-            besonderheiten: form.querySelector('textarea[name="besonderheiten"]').value || "Keine"
+    
+    <script>
+        // Beispiel-Routen
+        const routes = {
+            'thailand': [
+                { day: 1, location: 'Bangkok', activities: 'Grand Palace, Floating Markets' },
+                { day: 2, location: 'Bangkok', activities: 'Thai-Kochkurs, Stadtrundgang' },
+                { day: 3, location: 'Chiang Mai', activities: 'Tempel-Tour, Night Bazaar' },
+                { day: 4, location: 'Chiang Mai', activities: 'Wellness-Massage, Elefanten' },
+                { day: 5, location: 'Abreise', activities: 'Rückreise' }
+            ],
+            'barcelona': [
+                { day: 1, location: 'Barcelona', activities: 'Sagrada Familia, Park Güell' },
+                { day: 2, location: 'Barcelona', activities: 'Gothic Quarter, Tapas-Tour' },
+                { day: 3, location: 'Barcelona', activities: 'Strandtag, Freizeit' },
+                { day: 4, location: 'Barcelona', activities: 'Museen & Shopping' },
+                { day: 5, location: 'Abreise', activities: 'Abreise' }
+            ],
+            'default': [
+                { day: 1, location: 'Hauptstadt', activities: 'Stadtrundgang, Highlights' },
+                { day: 2, location: 'Nebenort', activities: 'Touren & Aktivitäten' },
+                { day: 3, location: 'Nebenort', activities: 'Natur & Entspannung' },
+                { day: 4, location: 'Highlights', activities: 'Letzte Aktivitäten' },
+                { day: 5, location: 'Abreise', activities: 'Rückreise' }
+            ]
         };
         
-        try {
-            submitBtn.disabled = true;
-            submitBtn.textContent = "⏳ Wird verarbeitet...";
+        function getRoute(destination) {
+            const key = destination.toLowerCase().substring(0, 3);
+            return routes[key] || routes['default'];
+        }
+        
+        function getPrices(budget) {
+            const prices = {
+                '€0 - €1500': { unt: '€320', akt: '€180', trf: '€200', total: '€700' },
+                '€1500 - €2500': { unt: '€550', akt: '€350', trf: '€300', total: '€1.200' },
+                '€2500 - €5000': { unt: '€900', akt: '€600', trf: '€500', total: '€2.000' },
+                '€5000 - €10000': { unt: '€1.800', akt: '€1.200', trf: '€1.000', total: '€4.000' },
+                '€10000+': { unt: '€3.000', akt: '€2.000', trf: '€1.500', total: '€6.500' },
+                'Flexibel': { unt: '€700', akt: '€450', trf: '€400', total: '€1.550' }
+            };
+            return prices[budget] || prices['Flexibel'];
+        }
+        
+        function validateAndShowSummary(event) {
+            event.preventDefault();
             
-            const webhookUrl = "https://webhook.tasklet.ai/wti_ve61x9v6p1gdwg8wq8m7";
+            const errorMsg = document.getElementById('errorMessage');
+            const kundenname = document.getElementById('kundenname').value;
+            const kundenemail = document.getElementById('kundenemail').value;
+            const reiseziel = document.getElementById('reiseziel').value;
+            const dauer = document.getElementById('dauer').value;
+            const personenanzahl = document.getElementById('personenanzahl').value;
+            const budget = document.querySelector('input[name="budget_gesamt"]:checked');
+            const interessen = Array.from(document.querySelectorAll('input[name="interessen"]:checked')).map(x => x.value);
             
-            const response = await fetch(webhookUrl, {
-                method: "POST",
-                mode: "no-cors",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData)
+            // Validierung
+            if (!kundenname || !kundenemail || !reiseziel || !dauer || !personenanzahl || !budget || interessen.length === 0) {
+                errorMsg.classList.add('show');
+                return;
+            }
+            
+            errorMsg.classList.remove('show');
+            
+            // Zusammenfassung füllen
+            document.getElementById('summaryGreeting').textContent = `${kundenname}, hier ist Ihre perfekte Reise!`;
+            document.getElementById('summaryZiel').textContent = reiseziel;
+            document.getElementById('summaryDauer').textContent = dauer;
+            document.getElementById('summaryPersonen').textContent = personenanzahl;
+            document.getElementById('summaryInteressen').textContent = interessen.join(', ');
+            document.getElementById('summaryBudget').textContent = budget.value;
+            
+            // Route füllen
+            const route = getRoute(reiseziel);
+            const tbody = document.getElementById('routeBody');
+            tbody.innerHTML = '';
+            route.forEach(r => {
+                tbody.innerHTML += `<tr><td><strong>Tag ${r.day}</strong></td><td>${r.location}</td><td>${r.activities}</td></tr>`;
             });
             
-            successMsg.style.display = "block";
-            errorMsg.style.display = "none";
-            form.reset();
+            // Preise füllen
+            const pricing = getPrices(budget.value);
+            document.getElementById('priceUnt').textContent = pricing.unt;
+            document.getElementById('priceAkt').textContent = pricing.akt;
+            document.getElementById('priceTrf').textContent = pricing.trf;
+            document.getElementById('priceTotal').textContent = pricing.total;
             
-            setTimeout(() => {
-                submitBtn.disabled = false;
-                submitBtn.textContent = "🚀 Reiseangebot Jetzt Anfordern";
-            }, 5000);
-            
-        } catch (error) {
-            console.error("Fehler:", error);
-            errorMsg.textContent = "✅ Anfrage wurde versendet! Bitte überprüfen Sie Ihr E-Mail-Postfach.";
-            errorMsg.style.background = "#d4edda";
-            errorMsg.style.color = "#155724";
-            errorMsg.style.display = "block";
-            successMsg.style.display = "none";
-            form.reset();
-            
-            setTimeout(() => {
-                submitBtn.disabled = false;
-                submitBtn.textContent = "🚀 Reiseangebot Jetzt Anfordern";
-            }, 5000);
+            // Seiten wechseln
+            document.getElementById('formSide').classList.add('hidden');
+            document.getElementById('summarySide').classList.add('active');
         }
-    });
-    
-    function bestimmePreisniveau(budget) {
-        const map = {
-            "€0 - €1500": "backpacker",
-            "€1500 - €2500": "budget_asia",
-            "€2500 - €5000": "standard_europe",
-            "€5000 - €10000": "premium_us",
-            "€10000+": "ultra_luxury",
-            "Flexibel": "standard_europe"
-        };
-        return map[budget] || "standard_europe";
-    }
-</script>
-
+        
+        function goBackToForm() {
+            document.getElementById('formSide').classList.remove('hidden');
+            document.getElementById('summarySide').classList.remove('active');
+            window.scrollTo(0, 0);
+        }
+        
+        function bookNow() {
+            const email = 'info@grandtourvienna.at';
+            const subject = 'Reisebuchung - GRAND TOUR VIENNA';
+            const body = 'Hallo,\n\nICH MÖCHTE MEINE REISE BUCHEN!\n\nBitte kontaktieren Sie mich.\n\nDanke!';
+            window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        }
+    </script>
 </body>
 </html>
