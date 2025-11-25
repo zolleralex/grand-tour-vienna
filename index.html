@@ -378,6 +378,35 @@
             font-weight: 600;
         }
         
+        .experience-card {
+            background: linear-gradient(135deg, #fff5e6 0%, #fff9e6 100%);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ffa500;
+            box-shadow: 0 2px 8px rgba(255, 165, 0, 0.1);
+        }
+        
+        .experience-card h4 {
+            color: #d97706;
+            margin-bottom: 8px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+        
+        .experience-card p {
+            color: #92400e;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+        
+        .experience-price {
+            font-size: 13px;
+            color: #d97706;
+            font-weight: 700;
+        }
+        
         .price-table {
             width: 100%;
             border-collapse: collapse;
@@ -496,6 +525,17 @@
             background: #d0d0d0;
         }
         
+        .budget-badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
         @media (max-width: 900px) {
             .main-container {
                 max-width: 100%;
@@ -571,7 +611,7 @@
                     <div class="form-row full">
                         <div class="form-group">
                             <label>Wohin soll die Reise gehen? <span class="required">*</span></label>
-                            <input type="text" id="reiseziel" placeholder="z.B. Thailand, Barcelona, Wien, Rom, Machu Picchu..." required>
+                            <input type="text" id="reiseziel" placeholder="z.B. Thailand, Barcelona, Wien, Rom..." required>
                         </div>
                     </div>
                     <div class="form-row three">
@@ -590,10 +630,10 @@
                             <label>Personenanzahl <span class="required">*</span></label>
                             <select id="personenanzahl" required>
                                 <option value="">-- Bitte wählen --</option>
-                                <option value="1 Person">1 Person</option>
-                                <option value="2 Erwachsene">2 Erwachsene (Paar)</option>
-                                <option value="3-4 Erwachsene">3-4 Erwachsene</option>
-                                <option value="Gruppe (5+)">Gruppe (5+ Personen)</option>
+                                <option value="1">1 Person</option>
+                                <option value="2">2 Erwachsene (Paar)</option>
+                                <option value="3">3-4 Erwachsene</option>
+                                <option value="5">Gruppe (5+ Personen)</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -620,14 +660,14 @@
                 <div class="form-section">
                     <h3>Gesamtbudget (ohne internationale Flüge) <span class="required">*</span></h3>
                     <div class="radio-group">
-                        <label><input type="radio" name="budget_gesamt" value="€0 - €1500"> Bis €1.500</label>
-                        <label><input type="radio" name="budget_gesamt" value="€1500 - €2500"> €1.500-€2.500</label>
-                        <label><input type="radio" name="budget_gesamt" value="€2500 - €5000"> €2.500-€5.000</label>
+                        <label><input type="radio" name="budget_gesamt" value="budget_low"> Bis €1.500</label>
+                        <label><input type="radio" name="budget_gesamt" value="budget_mid"> €1.500-€2.500</label>
+                        <label><input type="radio" name="budget_gesamt" value="budget_standard"> €2.500-€5.000</label>
                     </div>
                     <div class="radio-group" style="margin-top: 12px;">
-                        <label><input type="radio" name="budget_gesamt" value="€5000 - €10000"> €5.000-€10.000</label>
-                        <label><input type="radio" name="budget_gesamt" value="€10000 - €20000"> €10.000-€20.000</label>
-                        <label><input type="radio" name="budget_gesamt" value="€20000+"> €20.000+</label>
+                        <label><input type="radio" name="budget_gesamt" value="budget_premium"> €5.000-€10.000</label>
+                        <label><input type="radio" name="budget_gesamt" value="budget_luxury"> €10.000-€20.000</label>
+                        <label><input type="radio" name="budget_gesamt" value="budget_ultra"> €20.000+</label>
                     </div>
                 </div>
                 
@@ -653,6 +693,7 @@
             <div class="summary-header">
                 <h2>🎉 Ihre Traumreise wartet!</h2>
                 <p id="summaryGreeting"></p>
+                <div class="budget-badge" id="budgetBadge"></div>
             </div>
             
             <!-- ÜBERBLICK -->
@@ -687,7 +728,7 @@
             <!-- ROUTE -->
             <div class="summary-section">
                 <h3>🗺️ Tagesweise Route</h3>
-                <table class="route-table" id="routeTable">
+                <table class="route-table">
                     <thead>
                         <tr>
                             <th>Tag</th>
@@ -706,6 +747,12 @@
                 <div id="hotelsContainer"></div>
             </div>
             
+            <!-- ZUSÄTZLICHE ERLEBNISSE (Nur bei bestimmten Kombinationen) -->
+            <div class="summary-section" id="experiencesSection" style="display: none;">
+                <h3>🎟️ Spezial-Erlebnisse & Tickets</h3>
+                <div id="experiencesContainer"></div>
+            </div>
+            
             <!-- RESTAURANTS -->
             <div class="summary-section">
                 <h3>🍽️ Empfohlene Restaurants</h3>
@@ -714,23 +761,27 @@
             
             <!-- PREISDETAILS -->
             <div class="summary-section">
-                <h3>💰 Preisdetails</h3>
+                <h3>💰 Preisdetails (Gesamtbudget für alle Personen)</h3>
                 <table class="price-table">
                     <tr>
-                        <td class="price-label">✈️ Flüge (pro Person)</td>
+                        <td class="price-label">✈️ Flüge (für <span id="pricePersonCount"></span>)</td>
                         <td class="price-value"><span id="priceFlights"></span></td>
                     </tr>
                     <tr>
-                        <td class="price-label">🏨 Hotels (alle Nächte)</td>
+                        <td class="price-label">🏨 Hotels (<span id="priceNightCount"></span> Nächte)</td>
                         <td class="price-value"><span id="priceHotels"></span></td>
                     </tr>
                     <tr>
-                        <td class="price-label">🍽️ Restaurants & Kulinarik</td>
+                        <td class="price-label">🍽️ Restaurants & Kulinarik (<span id="priceDayCount"></span> Tage)</td>
                         <td class="price-value"><span id="priceRestaurants"></span></td>
                     </tr>
                     <tr>
-                        <td class="price-label">🎭 Aktivitäten & Touren</td>
+                        <td class="price-label">🎭 Aktivitäten & Touren (<span id="priceActivityDayCount"></span> Tage)</td>
                         <td class="price-value"><span id="priceActivities"></span></td>
+                    </tr>
+                    <tr>
+                        <td class="price-label">🎟️ Zusätzliche Erlebnisse</td>
+                        <td class="price-value"><span id="priceExperiences">€0</span></td>
                     </tr>
                     <tr>
                         <td class="price-label">✈️ Transfers & Logistik</td>
@@ -745,8 +796,8 @@
             <div class="summary-section">
                 <h3>✅ Im Preis enthalten</h3>
                 <ul style="margin-left: 20px; line-height: 1.8; font-size: 14px;">
-                    <li>✈️ Flüge (Economy) nach Destination</li>
-                    <li>🏨 4-5 Sterne Hotels mit Frühstück</li>
+                    <li>✈️ Flüge (Economy/Business je nach Budget)</li>
+                    <li>🏨 Hotels mit Frühstück</li>
                     <li>🍽️ Spitzengastronomie-Führung</li>
                     <li>🚗 Private Transfers & Mietfahrzeug</li>
                     <li>🎫 Eintritte Sehenswürdigkeiten</li>
@@ -773,7 +824,7 @@
                         </div>
                         <div class="contact-item">
                             <strong>🏢 Adresse</strong>
-                            Stephansplatz 5<br>1010 Wien, Österreich
+                            Stephansplatz 5, 1010 Wien
                         </div>
                         <div class="contact-item">
                             <strong>🌐 Website</strong>
@@ -792,126 +843,443 @@
     </div>
     
     <script>
-        // FLÜGE DATENBANK
+        // PREISS-SEGMENTE
+        const budgetSegments = {
+            'budget_low': { name: 'Budget Class', label: '💰 Budget bis €1.500' },
+            'budget_mid': { name: 'Standard Class', label: '🎯 Standard €1.500-€2.500' },
+            'budget_standard': { name: 'Comfort Class', label: '✈️ Comfort €2.500-€5.000' },
+            'budget_premium': { name: 'Premium Class', label: '🌟 Premium €5.000-€10.000' },
+            'budget_luxury': { name: 'Luxury Class', label: '👑 Luxury €10.000-€20.000' },
+            'budget_ultra': { name: 'Ultra Luxury', label: '💎 Ultra Luxury €20.000+' }
+        };
+        
+        // SPEZIAL-ERLEBNISSE (Barcelona + Sport)
+        const specialExperiences = {
+            'barcelona_abenteuer': [
+                { 
+                    name: '⚽ FC Barcelona - Camp Nou Stadionführung (ohne Spiel)',
+                    desc: 'Exklusive Führung durch das legendäre Camp Nou Stadium - 99.354 Plätze! Besuch Museum, Umkleideräume, Spielerbank',
+                    details: 'Dauer: 2 Stunden | Gruppengröße: bis 20 Personen',
+                    price: 35,
+                    pricePerGroup: 70
+                },
+                { 
+                    name: '🎫 FC Barcelona Live Match Tickets',
+                    desc: 'Tickets für Fußballspiel im Camp Nou (wenn verfügbar, abhängig vom Spielplan)',
+                    details: 'Beste Plätze: Seitenlinie, Mittelfeld | VIP-Sitzplätze möglich',
+                    price: 85,
+                    pricePerGroup: 170
+                },
+                { 
+                    name: '🏃 Barcelona Fußball-Trainingscamp',
+                    desc: 'Halbtagstraining mit professionellem Coach - Taktik & Technik lernen (für aktive Teilnehmer)',
+                    details: 'Inkl. Ausrüstung & Getränke | Kleine Gruppen (max. 12 Personen)',
+                    price: 120,
+                    pricePerGroup: 240
+                },
+                { 
+                    name: '🚴 Barcelona Urban Sports Tour',
+                    desc: 'Fahrradtour durch die besten Sportplätze & Stadien Barcelonas + kostenlos Kajak fahren',
+                    details: 'Dauer: Halbtag (4 Stunden) | Schwierigkeit: Mittel',
+                    price: 50,
+                    pricePerGroup: 100
+                }
+            ],
+            'barcelona_kultur': [
+                {
+                    name: '🎨 Picasso Museum Privatführung',
+                    desc: 'Exklusive private Führung durch Spaniens berühmtestes Kunstmuseum',
+                    details: 'Dauer: 2 Stunden | mit Kunsthistoriker',
+                    price: 45,
+                    pricePerGroup: 90
+                }
+            ]
+        };
+        
+        // FLÜGE DATENBANK (Budget-basiert)
         const flights = {
-            'thailand': [
-                { airline: '✈️ Thai Airways', departure: 'Wien → Bangkok', duration: '11h', price: 680 },
-                { airline: '✈️ Lufthansa', departure: 'Wien → Bangkok', duration: '13h (1 Stopp)', price: 520 },
-                { airline: '✈️ Turkish Airlines', departure: 'Wien → Bangkok', duration: '12h (1 Stopp)', price: 490 }
-            ],
-            'barcelona': [
-                { airline: '✈️ Lufthansa', departure: 'Wien → Barcelona', duration: '2h 15min', price: 180 },
-                { airline: '✈️ Austrian Airlines', departure: 'Wien → Barcelona', duration: '2h 15min', price: 200 },
-                { airline: '✈️ Ryanair', departure: 'Wien → Barcelona', duration: '2h 15min', price: 120 }
-            ],
-            'rom': [
-                { airline: '✈️ Alitalia', departure: 'Wien → Rom', duration: '2h 10min', price: 150 },
-                { airline: '✈️ Lufthansa', departure: 'Wien → Rom', duration: '2h 30min (1 Stopp)', price: 140 },
-                { airline: '✈️ Austrian Airlines', departure: 'Wien → Rom', duration: '2h 10min', price: 170 }
-            ],
-            'default': [
-                { airline: '✈️ Lufthansa', departure: 'Wien → Ziel', duration: 'ca. 2-3 Stunden', price: 200 },
-                { airline: '✈️ Austrian Airlines', departure: 'Wien → Ziel', duration: 'ca. 2-3 Stunden', price: 220 },
-                { airline: '✈️ Air Europe', departure: 'Wien → Ziel', duration: 'ca. 2-3 Stunden', price: 180 }
-            ]
+            'thailand': {
+                'budget_low': [
+                    { airline: '✈️ Thai Airways', departure: 'Wien → Bangkok', duration: '11h', price: 450 },
+                    { airline: '✈️ Lufthansa', departure: 'Wien → Bangkok', duration: '13h (1 Stopp)', price: 380 },
+                    { airline: '✈️ Turkish Airlines', departure: 'Wien → Bangkok', duration: '12h (1 Stopp)', price: 350 }
+                ],
+                'budget_mid': [
+                    { airline: '✈️ Thai Airways', departure: 'Wien → Bangkok', duration: '11h', price: 550 },
+                    { airline: '✈️ Lufthansa', departure: 'Wien → Bangkok', duration: '13h (1 Stopp)', price: 480 },
+                    { airline: '✈️ Singapore Airlines', departure: 'Wien → Bangkok', duration: '10h (1 Stopp)', price: 520 }
+                ],
+                'budget_standard': [
+                    { airline: '✈️ Thai Airways', departure: 'Wien → Bangkok', duration: '11h', price: 680 },
+                    { airline: '✈️ Singapore Airlines', departure: 'Wien → Bangkok', duration: '10h (1 Stopp)', price: 650 },
+                    { airline: '✈️ Cathay Pacific', departure: 'Wien → Bangkok', duration: '11h (1 Stopp)', price: 600 }
+                ],
+                'budget_premium': [
+                    { airline: '✈️ Thai Airways Business', departure: 'Wien → Bangkok (Business)', duration: '11h', price: 1200 },
+                    { airline: '✈️ Singapore Airlines Premium', departure: 'Wien → Bangkok (Premium)', duration: '10h', price: 1100 },
+                    { airline: '✈️ Lufthansa First', departure: 'Wien → Bangkok (First Class)', duration: '11h', price: 1400 }
+                ],
+                'budget_luxury': [
+                    { airline: '✈️ Thai Airways First', departure: 'Wien → Bangkok (First Class)', duration: '11h', price: 1800 },
+                    { airline: '✈️ Singapore Airlines Suites', departure: 'Wien → Bangkok (Suites)', duration: '10h', price: 1900 },
+                    { airline: '✈️ Cathay Pacific First', departure: 'Wien → Bangkok (First Class)', duration: '11h', price: 1700 }
+                ],
+                'budget_ultra': [
+                    { airline: '✈️ Thai Airways Private Jet', departure: 'Wien → Bangkok (Private)', duration: '9h', price: 2500 },
+                    { airline: '✈️ Singapore Airlines Suites', departure: 'Wien → Bangkok (Suites)', duration: '10h', price: 2000 },
+                    { airline: '🛩️ Luxury Charter Flight', departure: 'Wien → Bangkok (Private)', duration: '8h', price: 2800 }
+                ]
+            },
+            'barcelona': {
+                'budget_low': [
+                    { airline: '✈️ Lufthansa', departure: 'Wien → Barcelona', duration: '2h 15min', price: 100 },
+                    { airline: '✈️ Ryanair', departure: 'Wien → Barcelona', duration: '2h 15min', price: 80 },
+                    { airline: '✈️ EasyJet', departure: 'Wien → Barcelona', duration: '2h 30min', price: 90 }
+                ],
+                'budget_mid': [
+                    { airline: '✈️ Lufthansa', departure: 'Wien → Barcelona', duration: '2h 15min', price: 150 },
+                    { airline: '✈️ Austrian Airlines', departure: 'Wien → Barcelona', duration: '2h 15min', price: 160 },
+                    { airline: '✈️ Air Europa', departure: 'Wien → Barcelona', duration: '2h 20min', price: 140 }
+                ],
+                'budget_standard': [
+                    { airline: '✈️ Austrian Airlines', departure: 'Wien → Barcelona', duration: '2h 15min', price: 200 },
+                    { airline: '✈️ Lufthansa', departure: 'Wien → Barcelona', duration: '2h 15min', price: 180 },
+                    { airline: '✈️ Air Europa', departure: 'Wien → Barcelona', duration: '2h 20min', price: 190 }
+                ],
+                'budget_premium': [
+                    { airline: '✈️ Austrian Airlines Business', departure: 'Wien → Barcelona (Business)', duration: '2h 15min', price: 500 },
+                    { airline: '✈️ Lufthansa Premium', departure: 'Wien → Barcelona (Business)', duration: '2h 15min', price: 480 },
+                    { airline: '✈️ Air Europa Business', departure: 'Wien → Barcelona (Business)', duration: '2h 20min', price: 450 }
+                ],
+                'budget_luxury': [
+                    { airline: '✈️ Austrian Airlines First', departure: 'Wien → Barcelona (First)', duration: '2h 15min', price: 1000 },
+                    { airline: '✈️ Lufthansa First', departure: 'Wien → Barcelona (First)', duration: '2h 15min', price: 950 },
+                    { airline: '✈️ Air Europa Suites', departure: 'Wien → Barcelona (Suites)', duration: '2h 20min', price: 900 }
+                ],
+                'budget_ultra': [
+                    { airline: '✈️ Private Jet', departure: 'Wien → Barcelona (Private)', duration: '1h 30min', price: 1500 },
+                    { airline: '🛩️ Luxury Charter', departure: 'Wien → Barcelona (Charter)', duration: '1h 30min', price: 1600 },
+                    { airline: '✈️ Austrian Business Jet', departure: 'Wien → Barcelona (Private)', duration: '1h 30min', price: 1700 }
+                ]
+            },
+            'rom': {
+                'budget_low': [
+                    { airline: '✈️ Alitalia', departure: 'Wien → Rom', duration: '2h 10min', price: 90 },
+                    { airline: '✈️ Lufthansa', departure: 'Wien → Rom', duration: '2h 30min (1 Stopp)', price: 80 },
+                    { airline: '✈️ Ryanair', departure: 'Wien → Rom', duration: '2h 10min', price: 75 }
+                ],
+                'budget_mid': [
+                    { airline: '✈️ Alitalia', departure: 'Wien → Rom', duration: '2h 10min', price: 130 },
+                    { airline: '✈️ Austrian Airlines', departure: 'Wien → Rom', duration: '2h 10min', price: 140 },
+                    { airline: '✈️ Lufthansa', departure: 'Wien → Rom', duration: '2h 30min (1 Stopp)', price: 120 }
+                ],
+                'budget_standard': [
+                    { airline: '✈️ Alitalia', departure: 'Wien → Rom', duration: '2h 10min', price: 170 },
+                    { airline: '✈️ Austrian Airlines', departure: 'Wien → Rom', duration: '2h 10min', price: 180 },
+                    { airline: '✈️ Lufthansa', departure: 'Wien → Rom', duration: '2h 30min (1 Stopp)', price: 160 }
+                ],
+                'budget_premium': [
+                    { airline: '✈️ Alitalia Business', departure: 'Wien → Rom (Business)', duration: '2h 10min', price: 450 },
+                    { airline: '✈️ Austrian Airlines Business', departure: 'Wien → Rom (Business)', duration: '2h 10min', price: 480 },
+                    { airline: '✈️ Lufthansa Business', departure: 'Wien → Rom (Business)', duration: '2h 30min', price: 420 }
+                ],
+                'budget_luxury': [
+                    { airline: '✈️ Alitalia First', departure: 'Wien → Rom (First)', duration: '2h 10min', price: 900 },
+                    { airline: '✈️ Austrian First', departure: 'Wien → Rom (First)', duration: '2h 10min', price: 950 },
+                    { airline: '✈️ Lufthansa First', departure: 'Wien → Rom (First)', duration: '2h 30min', price: 850 }
+                ],
+                'budget_ultra': [
+                    { airline: '✈️ Private Jet', departure: 'Wien → Rom (Private)', duration: '1h 30min', price: 1400 },
+                    { airline: '🛩️ Luxury Charter', departure: 'Wien → Rom (Charter)', duration: '1h 30min', price: 1500 },
+                    { airline: '✈️ Business Jet', departure: 'Wien → Rom (Private)', duration: '1h 30min', price: 1600 }
+                ]
+            },
+            'default': {
+                'budget_low': [
+                    { airline: '✈️ Standardflug 1', departure: 'Wien → Ziel', duration: '2-3 Stunden', price: 100 },
+                    { airline: '✈️ Standardflug 2', departure: 'Wien → Ziel', duration: '2-3 Stunden', price: 90 },
+                    { airline: '✈️ Budget Flug', departure: 'Wien → Ziel', duration: '2-3 Stunden', price: 80 }
+                ],
+                'budget_mid': [
+                    { airline: '✈️ Lufthansa', departure: 'Wien → Ziel', duration: '2-3 Stunden', price: 150 },
+                    { airline: '✈️ Austrian Airlines', departure: 'Wien → Ziel', duration: '2-3 Stunden', price: 160 },
+                    { airline: '✈️ Air Europa', departure: 'Wien → Ziel', duration: '2-3 Stunden', price: 140 }
+                ],
+                'budget_standard': [
+                    { airline: '✈️ Lufthansa', departure: 'Wien → Ziel', duration: '2-3 Stunden', price: 200 },
+                    { airline: '✈️ Austrian Airlines', departure: 'Wien → Ziel', duration: '2-3 Stunden', price: 210 },
+                    { airline: '✈️ Iberia', departure: 'Wien → Ziel', duration: '2-3 Stunden', price: 190 }
+                ],
+                'budget_premium': [
+                    { airline: '✈️ Lufthansa Business', departure: 'Wien → Ziel (Business)', duration: '2-3 Stunden', price: 500 },
+                    { airline: '✈️ Austrian Business', departure: 'Wien → Ziel (Business)', duration: '2-3 Stunden', price: 520 },
+                    { airline: '✈️ Iberia Business', departure: 'Wien → Ziel (Business)', duration: '2-3 Stunden', price: 480 }
+                ],
+                'budget_luxury': [
+                    { airline: '✈️ Lufthansa First', departure: 'Wien → Ziel (First)', duration: '2-3 Stunden', price: 1000 },
+                    { airline: '✈️ Austrian First', departure: 'Wien → Ziel (First)', duration: '2-3 Stunden', price: 1050 },
+                    { airline: '✈️ Iberia First', departure: 'Wien → Ziel (First)', duration: '2-3 Stunden', price: 950 }
+                ],
+                'budget_ultra': [
+                    { airline: '✈️ Private Jet', departure: 'Wien → Ziel (Private)', duration: '1-2 Stunden', price: 1500 },
+                    { airline: '🛩️ Luxury Charter', departure: 'Wien → Ziel (Charter)', duration: '1-2 Stunden', price: 1600 },
+                    { airline: '✈️ Executive Jet', departure: 'Wien → Ziel (Private)', duration: '1-2 Stunden', price: 1700 }
+                ]
+            }
         };
         
-        // HOTELS DATENBANK (Falstaff-Standard)
+        // HOTELS DATENBANK (Budget-basiert)
         const hotels = {
-            'thailand': [
-                { name: 'Mandarin Oriental Bangkok', stars: '★★★★★', desc: 'Legendäres Luxushotel an der Chao Phraya, renommiert für Service', price: 450, city: 'Bangkok' },
-                { name: 'Four Seasons Chiang Mai', stars: '★★★★★', desc: 'Exklusive Resort-Anlage, Private Pools, Premium Wellness', price: 320, city: 'Chiang Mai' },
-                { name: 'Angsana Laguna Phuket', stars: '★★★★', desc: 'Strandhotel mit Lagune, Spa & Restaurants', price: 180, city: 'Phuket' }
-            ],
-            'barcelona': [
-                { name: 'Mandarin Oriental Barcelona', stars: '★★★★★', desc: 'Ultra-Luxus Boutique-Hotel, Michelin-Sterne-Restaurant', price: 380, city: 'Barcelona' },
-                { name: 'Ohla Barcelona', stars: '★★★★★', desc: 'Design-Hotel Gothic Quarter, moderner Luxus', price: 320, city: 'Barcelona' },
-                { name: 'Hotel Arts Barcelona', stars: '★★★★★', desc: 'Olympisches Hochhaus-Hotel am Strand', price: 350, city: 'Barcelona' }
-            ],
-            'rom': [
-                { name: 'Hotel Eden Rome', stars: '★★★★★', desc: 'Luxushotel mit Dachterrasse & Panoramablick', price: 400, city: 'Rom' },
-                { name: 'Hassler Roma', stars: '★★★★★', desc: 'Legendäres Hotel bei der Spanischen Treppe, seit 1893', price: 420, city: 'Rom' },
-                { name: 'Hotel de Russie', stars: '★★★★★', desc: 'Elegantes Boutique-Hotel, historischer Charme', price: 380, city: 'Rom' }
-            ],
-            'default': [
-                { name: 'Premium 5-Sterne Hotel', stars: '★★★★★', desc: 'Luxus-Unterkunft mit Weltklasse-Service & Ausstattung', price: 350, city: 'Hauptstadt' },
-                { name: 'Luxury 4-Sterne Hotel', stars: '★★★★', desc: 'Gehobenes Hotel mit exzellentem Restaurant', price: 220, city: 'Hauptstadt' }
-            ]
+            'barcelona': {
+                'budget_low': [
+                    { name: 'Petit Palace Barcelona', stars: '★★★', desc: 'Einfaches Hotel in zentraler Lage', price: 65, city: 'Barcelona' },
+                    { name: 'Tryp Barcelona', stars: '★★★', desc: 'Komfortables Budget-Hotel', price: 70, city: 'Barcelona' }
+                ],
+                'budget_mid': [
+                    { name: 'Novotel Barcelona City', stars: '★★★★', desc: 'Modernes 4-Sterne Hotel', price: 110, city: 'Barcelona' },
+                    { name: 'Axel Barcelona', stars: '★★★★', desc: 'Design-Hotel mit Rooftop', price: 120, city: 'Barcelona' }
+                ],
+                'budget_standard': [
+                    { name: 'Condes de Barcelona', stars: '★★★★', desc: 'Elegantes Hotel in Eixample', price: 160, city: 'Barcelona' },
+                    { name: 'Claris Barcelona', stars: '★★★★', desc: 'Boutique-Hotel mit Kunstsammlung', price: 180, city: 'Barcelona' }
+                ],
+                'budget_premium': [
+                    { name: 'Mandarin Oriental Barcelona', stars: '★★★★★', desc: 'Ultra-Luxus mit Michelin-Sterne Restaurant', price: 380, city: 'Barcelona' },
+                    { name: 'Ohla Barcelona', stars: '★★★★★', desc: 'Design-Luxus in Gothic Quarter', price: 320, city: 'Barcelona' }
+                ],
+                'budget_luxury': [
+                    { name: 'Casa Fuster Barcelona', stars: '★★★★★', desc: 'Historisches Palast-Hotel seit 1908', price: 450, city: 'Barcelona' },
+                    { name: 'Fairmont Barcelona', stars: '★★★★★', desc: 'Luxury Ocean-View Hotel', price: 420, city: 'Barcelona' }
+                ],
+                'budget_ultra': [
+                    { name: 'Royal Suite Barcelona', stars: '★★★★★', desc: 'Private Penthouse mit Panoramablick', price: 650, city: 'Barcelona' },
+                    { name: 'Luxury Villa Barcelona', stars: '★★★★★', desc: 'Private Urban Villa mit Helipad', price: 700, city: 'Barcelona' }
+                ]
+            },
+            'thailand': {
+                'budget_low': [
+                    { name: 'Lub d Bangkok', stars: '★★★', desc: 'Modernes Boutique-Budget Hotel', price: 45, city: 'Bangkok' },
+                    { name: 'U Hotels Chiang Mai', stars: '★★★', desc: 'Komfortables Design-Hotel', price: 35, city: 'Chiang Mai' }
+                ],
+                'budget_mid': [
+                    { name: 'Chatrium Hotel Bangkok', stars: '★★★★', desc: 'Gehobenes Business-Hotel am Fluss', price: 85, city: 'Bangkok' },
+                    { name: 'Akyra Manor Chiang Mai', stars: '★★★★', desc: 'Boutique-Hotel mit Stil', price: 75, city: 'Chiang Mai' }
+                ],
+                'budget_standard': [
+                    { name: 'Siam Hotel Bangkok', stars: '★★★★', desc: 'Elegantes Mittelklasse-Hotel', price: 130, city: 'Bangkok' },
+                    { name: 'Shangri-La Chiang Mai', stars: '★★★★', desc: 'Premium Hotel mit Spa & Pool', price: 140, city: 'Chiang Mai' }
+                ],
+                'budget_premium': [
+                    { name: 'Mandarin Oriental Bangkok', stars: '★★★★★', desc: 'Legendäres Luxushotel, Weltklasse-Service', price: 450, city: 'Bangkok' },
+                    { name: 'Four Seasons Chiang Mai', stars: '★★★★★', desc: 'Exklusive Resort-Anlage, Private Pools', price: 320, city: 'Chiang Mai' }
+                ],
+                'budget_luxury': [
+                    { name: 'Peninsula Bangkok', stars: '★★★★★', desc: 'Palace-ähnliches Luxus-Hotel', price: 550, city: 'Bangkok' },
+                    { name: 'Dhara Dhevi Chiang Mai', stars: '★★★★★', desc: 'Historisches Luxury Palace Resort', price: 500, city: 'Chiang Mai' }
+                ],
+                'budget_ultra': [
+                    { name: 'Chakra Palace Bangkok', stars: '★★★★★', desc: 'Private Villa mit 24/7 Butler', price: 800, city: 'Bangkok' },
+                    { name: 'Soneva Jani Phuket', stars: '★★★★★', desc: 'Ultra-Luxus Glass Villa mit Private Pools', price: 900, city: 'Phuket' }
+                ]
+            },
+            'rom': {
+                'budget_low': [
+                    { name: 'Hotel Artemide Rom', stars: '★★★', desc: 'Einfaches Hotel mit Dachterrasse', price: 55, city: 'Rom' },
+                    { name: 'Domus Romana', stars: '★★★', desc: 'Komfortables Mittelklasse-Hotel', price: 65, city: 'Rom' }
+                ],
+                'budget_mid': [
+                    { name: 'Colonna Palace Rom', stars: '★★★★', desc: 'Historisches 4-Sterne Hotel', price: 120, city: 'Rom' },
+                    { name: 'Fortyseven Hotel Rom', stars: '★★★★', desc: 'Design-Hotel mit Stil', price: 130, city: 'Rom' }
+                ],
+                'budget_standard': [
+                    { name: 'Artemide Rom', stars: '★★★★', desc: 'Elegant, zentral, mit Dachterrasse', price: 160, city: 'Rom' },
+                    { name: 'Hotel de la Ville Rom', stars: '★★★★', desc: 'Historisch prestigeträchtiges Hotel', price: 170, city: 'Rom' }
+                ],
+                'budget_premium': [
+                    { name: 'Hotel Eden Rom', stars: '★★★★★', desc: 'Luxushotel mit Dachterrasse & Aussicht', price: 400, city: 'Rom' },
+                    { name: 'Hassler Roma', stars: '★★★★★', desc: 'Legendäres Hotel seit 1893', price: 420, city: 'Rom' }
+                ],
+                'budget_luxury': [
+                    { name: 'Palazzo Brancaccio Rom', stars: '★★★★★', desc: 'Historischer Palast-Hotel, sehr exclusiv', price: 480, city: 'Rom' },
+                    { name: 'Savoy Rom', stars: '★★★★★', desc: 'Weltberühmtes Luxury Hotel', price: 500, city: 'Rom' }
+                ],
+                'budget_ultra': [
+                    { name: 'Royal Suite Hassler', stars: '★★★★★', desc: 'Private Suite mit Private Chef & Butler', price: 800, city: 'Rom' },
+                    { name: 'Presidential Villa Rom', stars: '★★★★★', desc: 'Private Palast-Villas', price: 900, city: 'Rom' }
+                ]
+            },
+            'default': {
+                'budget_low': [
+                    { name: 'Budget Hotel', stars: '★★★', desc: 'Einfaches, komfortables Hotel', price: 50, city: 'Hauptstadt' }
+                ],
+                'budget_mid': [
+                    { name: 'City Hotel', stars: '★★★★', desc: 'Gutes Mittel-Klasse Hotel', price: 100, city: 'Hauptstadt' }
+                ],
+                'budget_standard': [
+                    { name: 'Premium Hotel', stars: '★★★★', desc: 'Elegantes Hotel mit Service', price: 150, city: 'Hauptstadt' }
+                ],
+                'budget_premium': [
+                    { name: '5-Sterne Luxury Hotel', stars: '★★★★★', desc: 'Premium Hotel mit Weltklasse-Service', price: 350, city: 'Hauptstadt' }
+                ],
+                'budget_luxury': [
+                    { name: 'Ultra-Luxury Palace', stars: '★★★★★', desc: 'Privates Palast-Hotel', price: 500, city: 'Hauptstadt' }
+                ],
+                'budget_ultra': [
+                    { name: 'Private Presidential Suite', stars: '★★★★★', desc: 'Exklusivste Unterkunft', price: 800, city: 'Hauptstadt' }
+                ]
+            }
         };
         
-        // RESTAURANTS DATENBANK (Falstaff-Standard)
+        // RESTAURANTS DATENBANK (Budget-basiert)
         const restaurants = {
-            'thailand': [
-                { name: 'Gaggan Bangkok', stars: 'Michelin ★★★', desc: 'Progressive Thai Cuisine, Top 50 Asia Restaurants', city: 'Bangkok', cuisine: 'Thai Moderne' },
-                { name: 'Nahm', stars: 'Michelin ★', desc: 'Klassische Thai-Küche, konserviertes Erbe der Aromaten', city: 'Bangkok', cuisine: 'Authentisch Thai' },
-                { name: 'Chiang Mai Classics', stars: '★★★★', desc: 'Traditionelle Chiang Mai Spezialitäten & Massaman', city: 'Chiang Mai', cuisine: 'Nordthai' }
-            ],
-            'barcelona': [
-                { name: 'El Bulli (Tickets Bar)', stars: 'Michelin ★★★', desc: 'Avantgarde-Tapas vom legendären El Bulli Team', city: 'Barcelona', cuisine: 'Moderne Tapas' },
-                { name: 'ABaC', stars: 'Michelin ★★', desc: 'Puristische katalanische Haute Cuisine', city: 'Barcelona', cuisine: 'Katalanisch' },
-                { name: 'Kisko by Botafumeiro', stars: 'Michelin ★', desc: 'Galicia Meeresfrüchte, Top Fisch-Restaurant', city: 'Barcelona', cuisine: 'Galicia' }
-            ],
-            'rom': [
-                { name: 'Heinz Beck (Pergola)', stars: 'Michelin ★★', desc: 'Moderne italienische Haute Cuisine mit Blick aufs Rom', city: 'Rom', cuisine: 'Italienisch Modern' },
-                { name: 'Flavio al Velavevodetto', stars: 'Michelin ★', desc: 'Authentische römische Küche, traditionell', city: 'Rom', cuisine: 'Römisch' },
-                { name: 'Armando al Pantheon', stars: '★★★★★', desc: 'Legendäre Cacio e Pepe, seit 1961', city: 'Rom', cuisine: 'Klassisch Römisch' }
-            ],
-            'default': [
-                { name: 'Premium Restaurant 1', stars: 'Michelin ★★', desc: 'Hochmoderne Kulinarik, innovative Techniken', city: 'Hauptstadt', cuisine: 'Modern' },
-                { name: 'Premium Restaurant 2', stars: 'Michelin ★', desc: 'Regionale Spezialitäten auf höchstem Niveau', city: 'Hauptstadt', cuisine: 'Regional' }
-            ]
+            'barcelona': {
+                'budget_low': [
+                    { name: 'Cervecería Catalana', stars: '★★★', desc: 'Traditionelle Tapas-Bar', city: 'Barcelona', cuisine: 'Tapas Local' },
+                    { name: 'Bodega Montferry', stars: '★★★', desc: 'Klassische spanische Tapas', city: 'Barcelona', cuisine: 'Spanish Tapas' }
+                ],
+                'budget_mid': [
+                    { name: 'Caelis', stars: '★★★★', desc: 'Moderne katalanische Küche', city: 'Barcelona', cuisine: 'Katalanisch Modern' },
+                    { name: 'Botafumeiro', stars: '★★★★', desc: 'Renommiertes Fisch-Restaurant', city: 'Barcelona', cuisine: 'Galicia Fisch' }
+                ],
+                'budget_standard': [
+                    { name: 'Cinc Sentits', stars: 'Michelin ★', desc: 'Katalanische Cuisine mit modernem Touch', city: 'Barcelona', cuisine: 'Katalanisch Haute' },
+                    { name: 'Zeitgeist', stars: '★★★★★', desc: 'Gehobene europäische Küche', city: 'Barcelona', cuisine: 'Modern European' }
+                ],
+                'budget_premium': [
+                    { name: 'ABaC', stars: 'Michelin ★★', desc: 'Puristische katalanische Haute Cuisine', city: 'Barcelona', cuisine: 'Haute Cuisine' },
+                    { name: 'El Bulli (Tickets Bar)', stars: 'Michelin ★★★', desc: 'Legendäre Avantgarde-Tapas', city: 'Barcelona', cuisine: 'Avant-Garde' }
+                ],
+                'budget_luxury': [
+                    { name: 'Disfrutar', stars: 'Michelin ★★', desc: 'Molekulare Gastronomie, Top 20 Weltweit', city: 'Barcelona', cuisine: 'Molecular' },
+                    { name: 'Private Chef Experience', stars: '★★★★★', desc: 'Privater Michelin-Chef in historischer Villa', city: 'Barcelona', cuisine: 'Private Michelin' }
+                ],
+                'budget_ultra': [
+                    { name: 'Mandarin Oriental Private Chef', stars: '★★★★★', desc: '24h Private Michelin Chef, exklusiv', city: 'Barcelona', cuisine: 'Ultra-Luxury' },
+                    { name: 'Exclusive Yacht Gourmet', stars: '★★★★★', desc: 'Private Michelin-Yacht-Dining', city: 'Barcelona', cuisine: 'Michelin Yacht' }
+                ]
+            },
+            'thailand': {
+                'budget_low': [
+                    { name: 'Noodle Street Bangkok', stars: '★★★', desc: 'Authentische Thai Street Food', city: 'Bangkok', cuisine: 'Thai Street Food' },
+                    { name: 'Local Market Chiang Mai', stars: '★★★', desc: 'Traditionelle Thai-Küche, günstiges Essen', city: 'Chiang Mai', cuisine: 'Lokal Thai' }
+                ],
+                'budget_mid': [
+                    { name: 'Sukhothai', stars: '★★★★', desc: 'Gehobene Thai-Küche mit Moderne Note', city: 'Bangkok', cuisine: 'Thai Modern' },
+                    { name: 'Kariang Restaurant', stars: '★★★★', desc: 'Regionale Spezialitäten aus Nordthailand', city: 'Chiang Mai', cuisine: 'Nordthai' }
+                ],
+                'budget_standard': [
+                    { name: 'Le Du Bangkok', stars: 'Michelin ★', desc: 'Moderne Thai-Fusionküche, innovativ', city: 'Bangkok', cuisine: 'Thai Modern' },
+                    { name: 'Malai Tasting Room', stars: '★★★★★', desc: 'Gehobene Thai-Küche mit lokalen Zutaten', city: 'Chiang Mai', cuisine: 'Tasting Menu' }
+                ],
+                'budget_premium': [
+                    { name: 'Gaggan Bangkok', stars: 'Michelin ★★★', desc: 'Progressive Thai, Top 50 Asia Restaurants', city: 'Bangkok', cuisine: 'Thai Progressive' },
+                    { name: 'Huen Phen', stars: '★★★★★', desc: 'Legendendär für Masaman & Curries', city: 'Chiang Mai', cuisine: 'Thai Klassiker' }
+                ],
+                'budget_luxury': [
+                    { name: 'Nabezo Bangkok', stars: 'Michelin ★★', desc: 'Premium Japanisch-Thai Fusion, Private Dining', city: 'Bangkok', cuisine: 'Fusion Luxury' },
+                    { name: 'Amanpuri Private Chef', stars: '★★★★★', desc: 'Private Chef in Villa mit Panoramablick', city: 'Phuket', cuisine: 'Privat Gourmet' }
+                ],
+                'budget_ultra': [
+                    { name: 'Private Yacht Dining Bangkok', stars: '★★★★★', desc: 'Exklusive Private Chef auf Luxus-Yacht', city: 'Bangkok', cuisine: 'Michelin Private' },
+                    { name: 'Chakra Palace Private Chef', stars: '★★★★★', desc: '24h Private Chef, Multi-Michelin Standard', city: 'Chiang Mai', cuisine: 'Ultra-Premium' }
+                ]
+            },
+            'rom': {
+                'budget_low': [
+                    { name: 'Armando al Pantheon', stars: '★★★', desc: 'Legendäre Cacio e Pepe seit 1961', city: 'Rom', cuisine: 'Römisch Klassiker' },
+                    { name: 'Flavio al Velavevodetto', stars: '★★★', desc: 'Authentische römische Küche', city: 'Rom', cuisine: 'Römisch Echt' }
+                ],
+                'budget_mid': [
+                    { name: 'Trattoria da Valentino', stars: '★★★★', desc: 'Klassische italienische Küche', city: 'Rom', cuisine: 'Italienisch Klassiker' },
+                    { name: 'Matriciano', stars: '★★★★', desc: 'Traditionale Römerküche mit Pasta Specials', city: 'Rom', cuisine: 'Römisch Tradition' }
+                ],
+                'budget_standard': [
+                    { name: 'Il Convivio Troiani', stars: 'Michelin ★', desc: 'Gehobene römische Küche', city: 'Rom', cuisine: 'Roman Gourmet' },
+                    { name: 'Pipero Roma', stars: '★★★★★', desc: 'Premium Pasta-Spezialisten', city: 'Rom', cuisine: 'Pasta Premium' }
+                ],
+                'budget_premium': [
+                    { name: 'Heinz Beck (Pergola)', stars: 'Michelin ★★', desc: 'Moderne italienische Haute Cuisine', city: 'Rom', cuisine: 'Italiana Haute' },
+                    { name: 'La Pergola', stars: 'Michelin ★★★', desc: 'Renommierendes Spitzenrestaurant', city: 'Rom', cuisine: 'Michelin 3 Sterne' }
+                ],
+                'budget_luxury': [
+                    { name: 'Aperto by Chef Massimo', stars: '★★★★★', desc: 'Private Tasting Menu, exklusiv', city: 'Rom', cuisine: 'Tasting Private' },
+                    { name: 'Il Sorpasso VIP', stars: '★★★★★', desc: 'Private Dining Room mit Michelin-Chef', city: 'Rom', cuisine: 'Private Michelin' }
+                ],
+                'budget_ultra': [
+                    { name: 'Vatican Palace Private Dining', stars: '★★★★★', desc: 'Exklusives Private Michelin-Dinner im Palast', city: 'Rom', cuisine: 'Ultra-Premium' },
+                    { name: 'Luxury Villa Rospigliosi', stars: '★★★★★', desc: 'Private Chef in historischer Villa', city: 'Rom', cuisine: 'Michelin Villa' }
+                ]
+            },
+            'default': {
+                'budget_low': [
+                    { name: 'Local Restaurant', stars: '★★★', desc: 'Authentische lokale Küche', city: 'Hauptstadt', cuisine: 'Local' }
+                ],
+                'budget_mid': [
+                    { name: 'Regional Cuisine', stars: '★★★★', desc: 'Gehobene regionale Küche', city: 'Hauptstadt', cuisine: 'Regional' }
+                ],
+                'budget_standard': [
+                    { name: 'Fine Dining Restaurant', stars: '★★★★', desc: 'Gourmet-Restaurant', city: 'Hauptstadt', cuisine: 'Gourmet' }
+                ],
+                'budget_premium': [
+                    { name: 'Michelin-Star Restaurant', stars: 'Michelin ★', desc: 'Renommiertes Spitzenrestaurant', city: 'Hauptstadt', cuisine: 'Michelin' }
+                ],
+                'budget_luxury': [
+                    { name: 'Exclusive Private Dinner', stars: '★★★★★', desc: 'Private Chef Experience', city: 'Hauptstadt', cuisine: 'Private Michelin' }
+                ],
+                'budget_ultra': [
+                    { name: '24h Private Michelin Chef', stars: '★★★★★', desc: 'Persönlicher Michelin-Sterne Chef', city: 'Hauptstadt', cuisine: 'Ultra-Luxury' }
+                ]
+            }
         };
         
-        // TOUREN & AKTIVITÄTEN
+        // ROUTES
         const routes = {
-            'thailand': [
-                { day: 1, location: 'Bangkok', activities: 'Grand Palace, Wat Phra Kaew, Floating Markets', hotel: 'Mandarin Oriental Bangkok' },
-                { day: 2, location: 'Bangkok', activities: 'Thai-Kochkurs, Chao Phraya Dinner Cruise', hotel: 'Mandarin Oriental Bangkok' },
-                { day: 3, location: 'Chiang Mai', activities: 'Tempel-Tour, Old City Walking Tour', hotel: 'Four Seasons Chiang Mai' },
-                { day: 4, location: 'Chiang Mai', activities: 'Elefanten Sanctuary, Wellness-Massage', hotel: 'Four Seasons Chiang Mai' },
-                { day: 5, location: 'Bangkok', activities: 'Abreise', hotel: '-' }
-            ],
             'barcelona': [
-                { day: 1, location: 'Barcelona', activities: 'Sagrada Familia, Park Güell', hotel: 'Mandarin Oriental Barcelona' },
-                { day: 2, location: 'Barcelona', activities: 'Gothic Quarter, Picasso Museum, Tapas-Tour', hotel: 'Mandarin Oriental Barcelona' },
-                { day: 3, location: 'Barcelona', activities: 'Montjuïc, Design Museum, Freizeit', hotel: 'Mandarin Oriental Barcelona' },
-                { day: 4, location: 'Barcelona', activities: 'Montserrat Day Trip, Weingut', hotel: 'Mandarin Oriental Barcelona' },
+                { day: 1, location: 'Barcelona', activities: 'Sagrada Familia, Park Güell', hotel: 'Luxury Hotel Barcelona' },
+                { day: 2, location: 'Barcelona', activities: 'Gothic Quarter, Picasso Museum', hotel: 'Luxury Hotel Barcelona' },
+                { day: 3, location: 'Barcelona', activities: 'Camp Nou, Montjuïc', hotel: 'Luxury Hotel Barcelona' },
+                { day: 4, location: 'Barcelona', activities: 'Montserrat, Freizeit', hotel: 'Luxury Hotel Barcelona' },
                 { day: 5, location: 'Barcelona', activities: 'Abreise', hotel: '-' }
             ],
+            'thailand': [
+                { day: 1, location: 'Bangkok', activities: 'Grand Palace, Wat Phra Kaew, Floating Markets', hotel: 'Luxury Hotel Bangkok' },
+                { day: 2, location: 'Bangkok', activities: 'Thai-Kochkurs, Chao Phraya Dinner Cruise', hotel: 'Luxury Hotel Bangkok' },
+                { day: 3, location: 'Chiang Mai', activities: 'Tempel-Tour, Old City Walking Tour', hotel: 'Premium Hotel Chiang Mai' },
+                { day: 4, location: 'Chiang Mai', activities: 'Elefanten Sanctuary, Wellness-Massage', hotel: 'Premium Hotel Chiang Mai' },
+                { day: 5, location: 'Bangkok', activities: 'Abreise', hotel: '-' }
+            ],
             'rom': [
-                { day: 1, location: 'Rom', activities: 'Kolosseum, Forum Romanum, Palatinhügel', hotel: 'Hotel Eden Rome' },
-                { day: 2, location: 'Rom', activities: 'Pantheon, Trevi-Brunnen, Spanische Treppe', hotel: 'Hotel Eden Rome' },
-                { day: 3, location: 'Rom', activities: 'Petersdom, Vatikan Museen', hotel: 'Hotel Eden Rome' },
-                { day: 4, location: 'Rom', activities: 'Villa Borghese, Trastevere Walking Tour, Weinkeller-Besuch', hotel: 'Hotel Eden Rome' },
+                { day: 1, location: 'Rom', activities: 'Kolosseum, Forum Romanum', hotel: 'Luxury Hotel Rom' },
+                { day: 2, location: 'Rom', activities: 'Pantheon, Trevi-Brunnen', hotel: 'Luxury Hotel Rom' },
+                { day: 3, location: 'Rom', activities: 'Petersdom, Vatikan Museen', hotel: 'Luxury Hotel Rom' },
+                { day: 4, location: 'Rom', activities: 'Villa Borghese, Trastevere', hotel: 'Luxury Hotel Rom' },
                 { day: 5, location: 'Rom', activities: 'Abreise', hotel: '-' }
             ],
             'default': [
-                { day: 1, location: 'Hauptstadt', activities: 'Stadtrundgang, Hauptsehenswürdigkeiten', hotel: 'Premium Hotel' },
-                { day: 2, location: 'Zentral', activities: 'Museums-Tour, Kulinarik-Erlebnis', hotel: 'Premium Hotel' },
-                { day: 3, location: 'Umgebung', activities: 'Natur & Aktivitäten', hotel: 'Premium Hotel' },
-                { day: 4, location: 'Highlights', activities: 'Letzte Abenteuer', hotel: 'Premium Hotel' },
+                { day: 1, location: 'Hauptstadt', activities: 'Stadtrundgang, Sehenswürdigkeiten', hotel: 'Premium Hotel' },
+                { day: 2, location: 'Zentral', activities: 'Museums-Tour, Kulinarik', hotel: 'Premium Hotel' },
+                { day: 3, location: 'Umgebung', activities: 'Aktivitäten & Natur', hotel: 'Premium Hotel' },
+                { day: 4, location: 'Highlights', activities: 'Letzte Erlebnisse', hotel: 'Premium Hotel' },
                 { day: 5, location: 'Abreise', activities: 'Rückreise', hotel: '-' }
             ]
         };
         
         function getKey(destination) {
             const lower = destination.toLowerCase();
-            if (lower.includes('thai')) return 'thailand';
             if (lower.includes('barc') || lower.includes('span')) return 'barcelona';
+            if (lower.includes('thai')) return 'thailand';
             if (lower.includes('rom') || lower.includes('ital')) return 'rom';
             return 'default';
         }
         
-        function getPrices(budget) {
-            const pricing = {
-                '€0 - €1500': { flights: 400, hotels: 600, restaurants: 250, activities: 150, transfers: 100 },
-                '€1500 - €2500': { flights: 550, hotels: 1000, restaurants: 450, activities: 300, transfers: 200 },
-                '€2500 - €5000': { flights: 750, hotels: 1600, restaurants: 700, activities: 600, transfers: 350 },
-                '€5000 - €10000': { flights: 1000, hotels: 2800, restaurants: 1200, activities: 1000, transfers: 500 },
-                '€10000 - €20000': { flights: 1500, hotels: 4500, restaurants: 2000, activities: 1800, transfers: 700 },
-                '€20000+': { flights: 2000, hotels: 6500, restaurants: 3000, activities: 2500, transfers: 1000 }
-            };
-            return pricing[budget] || pricing['€5000 - €10000'];
+        function getDays(durationString) {
+            const match = durationString.match(/(\d+)\s*Tage/);
+            return match ? parseInt(match[1]) : 5;
+        }
+        
+        function getNights(durationString) {
+            const match = durationString.match(/(\d+)\s*Nächte/);
+            return match ? parseInt(match[1]) : 4;
         }
         
         function validateAndShowSummary(event) {
@@ -922,12 +1290,12 @@
             const kundenemail = document.getElementById('kundenemail').value;
             const reiseziel = document.getElementById('reiseziel').value;
             const dauer = document.getElementById('dauer').value;
-            const personenanzahl = document.getElementById('personenanzahl').value;
+            const personenanzahl = parseInt(document.getElementById('personenanzahl').value);
             const startdatum = document.getElementById('startdatum').value;
-            const budget = document.querySelector('input[name="budget_gesamt"]:checked');
+            const budgetSegment = document.querySelector('input[name="budget_gesamt"]:checked');
             const interessen = Array.from(document.querySelectorAll('input[name="interessen"]:checked')).map(x => x.value);
             
-            if (!kundenname || !kundenemail || !reiseziel || !dauer || !personenanzahl || !startdatum || !budget || interessen.length === 0) {
+            if (!kundenname || !kundenemail || !reiseziel || !dauer || !personenanzahl || !startdatum || !budgetSegment || interessen.length === 0) {
                 errorMsg.classList.add('show');
                 return;
             }
@@ -935,32 +1303,30 @@
             errorMsg.classList.remove('show');
             
             const key = getKey(reiseziel);
-            const pricing = getPrices(budget.value);
-            const daysCount = parseInt(dauer);
-            
-            // Personen zählen
-            let personCount = 2;
-            if (personenanzahl.includes('1 Person')) personCount = 1;
-            else if (personenanzahl.includes('3')) personCount = 3;
-            else if (personenanzahl.includes('4') || personenanzahl.includes('5')) personCount = 4;
+            const days = getDays(dauer);
+            const nights = getNights(dauer);
+            const budgetCode = budgetSegment.value;
+            const budgetLabel = budgetSegments[budgetCode].label;
             
             // Überblick
-            document.getElementById('summaryGreeting').textContent = `${kundenname}, Ihre perfekte Reise nach ${reiseziel}!`;
+            document.getElementById('summaryGreeting').textContent = `${kundenname}, hier ist Ihre perfekte Reise nach ${reiseziel}!`;
             document.getElementById('summaryZiel').textContent = reiseziel;
             document.getElementById('summaryDatum').textContent = formatDate(startdatum);
             document.getElementById('summaryDauer').textContent = dauer;
-            document.getElementById('summaryPersonen').textContent = personenanzahl;
+            document.getElementById('summaryPersonen').textContent = personenanzahl + ' Person' + (personenanzahl > 1 ? 'en' : '');
+            document.getElementById('budgetBadge').textContent = budgetLabel;
             
             // FLÜGE
-            const flightsList = flights[key] || flights['default'];
+            const flightsList = flights[key][budgetCode] || flights['default'][budgetCode];
             let flightsHTML = '';
             flightsList.forEach(flight => {
+                const totalPrice = flight.price * personenanzahl;
                 flightsHTML += `
                     <div class="service-card">
                         <h4>${flight.airline}</h4>
                         <p>🛫 ${flight.departure}</p>
                         <p>⏱️ Flugdauer: ${flight.duration}</p>
-                        <div class="service-rating">💰 ab €${flight.price} pro Person</div>
+                        <div class="service-rating">💰 €${flight.price}/Person | Gesamt: €${totalPrice} (${personenanzahl} Personen)</div>
                     </div>
                 `;
             });
@@ -982,22 +1348,63 @@
             });
             
             // HOTELS
-            const hotelsList = hotels[key] || hotels['default'];
+            const hotelsList = hotels[key][budgetCode] || hotels['default'][budgetCode];
             let hotelsHTML = '';
             hotelsList.forEach(hotel => {
+                const totalHotelPrice = hotel.price * nights;
                 hotelsHTML += `
                     <div class="service-card">
                         <h4>${hotel.name} ${hotel.stars}</h4>
                         <p>${hotel.desc}</p>
                         <p>📍 ${hotel.city}</p>
-                        <div class="service-rating">💰 €${hotel.price} pro Nacht</div>
+                        <div class="service-rating">💰 €${hotel.price}/Nacht | Gesamt ${nights} Nächte: €${totalHotelPrice}</div>
                     </div>
                 `;
             });
             document.getElementById('hotelsContainer').innerHTML = hotelsHTML;
             
+            // SPEZIAL-ERLEBNISSE (Barcelona + Sport)
+            let totalExperiencePrice = 0;
+            let experiencesHTML = '';
+            
+            if (key === 'barcelona' && interessen.includes('Abenteuer')) {
+                const experiences = specialExperiences['barcelona_abenteuer'] || [];
+                experiences.forEach(exp => {
+                    const totalExpPrice = exp.pricePerGroup;
+                    totalExperiencePrice += totalExpPrice;
+                    experiencesHTML += `
+                        <div class="experience-card">
+                            <h4>${exp.name}</h4>
+                            <p>${exp.desc}</p>
+                            <p>📋 ${exp.details}</p>
+                            <div class="experience-price">💰 €${exp.pricePerGroup} (für 2 Personen)</div>
+                        </div>
+                    `;
+                });
+                document.getElementById('experiencesSection').style.display = 'block';
+                document.getElementById('experiencesContainer').innerHTML = experiencesHTML;
+            } else if (key === 'barcelona' && interessen.includes('Kultur')) {
+                const experiences = specialExperiences['barcelona_kultur'] || [];
+                experiences.forEach(exp => {
+                    const totalExpPrice = exp.pricePerGroup;
+                    totalExperiencePrice += totalExpPrice;
+                    experiencesHTML += `
+                        <div class="experience-card">
+                            <h4>${exp.name}</h4>
+                            <p>${exp.desc}</p>
+                            <p>📋 ${exp.details}</p>
+                            <div class="experience-price">💰 €${exp.pricePerGroup}</div>
+                        </div>
+                    `;
+                });
+                document.getElementById('experiencesSection').style.display = 'block';
+                document.getElementById('experiencesContainer').innerHTML = experiencesHTML;
+            } else {
+                document.getElementById('experiencesSection').style.display = 'none';
+            }
+            
             // RESTAURANTS
-            const restaurantsList = restaurants[key] || restaurants['default'];
+            const restaurantsList = restaurants[key][budgetCode] || restaurants['default'][budgetCode];
             let restaurantsHTML = '';
             restaurantsList.forEach(rest => {
                 restaurantsHTML += `
@@ -1010,20 +1417,34 @@
             });
             document.getElementById('restaurantsContainer').innerHTML = restaurantsHTML;
             
-            // PREISE
-            const totalFlights = pricing.flights * personCount;
-            const totalHotels = pricing.hotels * daysCount;
-            const totalRestaurants = pricing.restaurants * daysCount;
-            const totalActivities = pricing.activities * daysCount;
-            const totalTransfers = pricing.transfers;
-            const grandTotal = totalFlights + totalHotels + totalRestaurants + totalActivities + totalTransfers;
+            // PREISBERECHNUNG
+            const flightPricePerPerson = flightsList[0].price;
+            const hotelPricePerNight = hotelsList[0].price;
+            const restaurantPrice = budgetCode === 'budget_low' ? 35 : budgetCode === 'budget_mid' ? 70 : budgetCode === 'budget_standard' ? 120 : budgetCode === 'budget_premium' ? 200 : budgetCode === 'budget_luxury' ? 300 : 500;
+            const activityPrice = budgetCode === 'budget_low' ? 40 : budgetCode === 'budget_mid' ? 80 : budgetCode === 'budget_standard' ? 150 : budgetCode === 'budget_premium' ? 250 : budgetCode === 'budget_luxury' ? 400 : 600;
+            const transferPrice = budgetCode === 'budget_low' ? 100 : budgetCode === 'budget_mid' ? 150 : budgetCode === 'budget_standard' ? 250 : budgetCode === 'budget_premium' ? 400 : budgetCode === 'budget_luxury' ? 600 : 1000;
             
+            const totalFlights = flightPricePerPerson * personenanzahl;
+            const totalHotels = hotelPricePerNight * nights;
+            const totalRestaurants = restaurantPrice * (days - 1);
+            const totalActivities = activityPrice * (days - 1);
+            const totalTransfers = transferPrice;
+            const grandTotal = totalFlights + totalHotels + totalRestaurants + totalActivities + totalTransfers + totalExperiencePrice;
+            
+            // Preis-Labels
+            document.getElementById('pricePersonCount').textContent = personenanzahl + ' Person' + (personenanzahl > 1 ? 'en' : '');
+            document.getElementById('priceNightCount').textContent = nights;
+            document.getElementById('priceDayCount').textContent = (days - 1);
+            document.getElementById('priceActivityDayCount').textContent = (days - 1);
+            
+            // Preis-Werte
             document.getElementById('priceFlights').textContent = '€' + totalFlights;
             document.getElementById('priceHotels').textContent = '€' + totalHotels;
             document.getElementById('priceRestaurants').textContent = '€' + totalRestaurants;
             document.getElementById('priceActivities').textContent = '€' + totalActivities;
+            document.getElementById('priceExperiences').textContent = '€' + totalExperiencePrice;
             document.getElementById('priceTransfers').textContent = '€' + totalTransfers;
-            document.getElementById('totalPrice').textContent = '💰 Gesamtpreis: €' + grandTotal;
+            document.getElementById('totalPrice').textContent = '💰 GESAMTPREIS: €' + grandTotal;
             
             // Seiten wechseln
             document.getElementById('formPage').classList.remove('active');
